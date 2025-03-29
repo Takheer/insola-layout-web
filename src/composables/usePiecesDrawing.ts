@@ -1,13 +1,16 @@
-import { type TPiecesLayout } from "~/services/alignPieces";
+import { type TPiecesLayout } from "@/services/alignPieces";
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
+import {computed, nextTick, ref} from "vue";
+
 
 const LIST_BIGGER = 2780;
 const LIST_LESSER = 2050;
 
 export const usePiecesDrawing = () => {
-  const { $viewport } = useNuxtApp();
+  const breakpoints = useBreakpoints(breakpointsTailwind)
+  const isMobile = breakpoints.smaller('lg')
 
   const aspect = LIST_BIGGER/LIST_LESSER;
-  const isMobile = computed(() => $viewport.isLessThan('tablet'))
   const rawListHeightPx = () => isMobile.value ? 180 : 400;
 
   const canvasHeight = ref(rawListHeightPx())

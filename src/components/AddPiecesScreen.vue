@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import IDButton from "~/components/ui/IDButton.vue";
+import IDButton from "@/components/ui/IDButton.vue";
 import {PhPlus, PhFilePdf} from "@phosphor-icons/vue";
-import {useCuttingStore} from "~/stores/useCuttingStore";
+import {useCuttingStore} from "@/stores/useCuttingStore";
 const store = useCuttingStore();
 </script>
 

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import {onMounted} from "vue";
+
 const model = defineModel()
 
 function update(e: Event) {

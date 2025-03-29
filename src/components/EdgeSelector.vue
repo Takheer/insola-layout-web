@@ -1,13 +1,16 @@
 <script setup lang="ts">
-import IDPopup from "~/components/ui/IDPopup.vue";
-import {edgeValues} from "~/components/consts";
-const model = defineModel()
+import IDPopup from "@/components/ui/IDPopup.vue";
+import {edgeValues} from "@/components/consts";
+import {ref} from "vue";
 
-const { $viewport } = useNuxtApp();
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const isMobile = breakpoints.smaller('lg')
+
+const model = defineModel()
 
 const hovered = ref(false)
 
-const isMobile = computed(() => $viewport.isLessThan('mobileMedium'))
 
 function update() {
   switch (model.value) {

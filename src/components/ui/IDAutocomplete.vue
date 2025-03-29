@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { vOnClickOutside } from '@vueuse/components'
-import IDTextInput from "~/components/ui/IDTextInput.vue";
+import IDTextInput from "@/components/ui/IDTextInput.vue";
+import {computed, ref, watch} from "vue";
 
 export type TProps = {
   modelValue?: string;

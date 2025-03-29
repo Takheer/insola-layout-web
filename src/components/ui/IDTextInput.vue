@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import {ref} from "vue";
+
 const model = defineModel()
 
 function update(e: Event) {
@@ -48,7 +50,7 @@ const id = props.label || props.placeholder
           @focus="emits('focus')"
           @blur="emits('blur')"
           :value="model"
-          class="box-content block bg-transparent font-inter 
+          class="box-content block bg-transparent font-inter
             not-last:pr-0 w-full border-none focus-visible:outline-none
             cursor-inherit transition-all"
           :class="[

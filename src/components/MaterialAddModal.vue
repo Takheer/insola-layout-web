@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import IDModal from "~/components/ui/IDModal.vue";
-import {useCuttingStore} from "~/stores/useCuttingStore";
-import IDTextInput from "~/components/ui/IDTextInput.vue";
-import IDButton from "~/components/ui/IDButton.vue";
+import IDModal from "@/components/ui/IDModal.vue";
+import {useCuttingStore} from "@/stores/useCuttingStore";
+import IDTextInput from "@/components/ui/IDTextInput.vue";
+import IDButton from "@/components/ui/IDButton.vue";
 import useVuelidate from "@vuelidate/core";
-import { required, numeric } from "~/utils/validators";
+import { required, numeric } from "@/utils/validators";
 
 const model = defineModel()
 

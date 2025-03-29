@@ -9,13 +9,18 @@ import {
   PhTrash,
   PhX
 } from "@phosphor-icons/vue";
-import EdgeSelector from "~/components/EdgeSelector.vue";
-import IDTextInput from "~/components/ui/IDTextInput.vue";
-import IDPopup from "~/components/ui/IDPopup.vue";
-import IDButton from "~/components/ui/IDButton.vue";
-import type {TCuttingPiece} from "~/stores/useCuttingStore";
-import {useCuttingStore} from "~/stores/useCuttingStore";
-import IDAutocomplete from "~/components/ui/IDAutocomplete.vue";
+import EdgeSelector from "@/components/EdgeSelector.vue";
+import IDTextInput from "@/components/ui/IDTextInput.vue";
+import IDPopup from "@/components/ui/IDPopup.vue";
+import IDButton from "@/components/ui/IDButton.vue";
+import type {TCuttingPiece} from "@/stores/useCuttingStore";
+import {useCuttingStore} from "@/stores/useCuttingStore";
+import IDAutocomplete from "@/components/ui/IDAutocomplete.vue";
+
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
+import {computed, ref} from "vue";
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const isMobile = breakpoints.smaller('lg')
 
 type TProps = {
   piece: TCuttingPiece,
@@ -31,7 +36,6 @@ type TEmits = {
 };
 const emits = defineEmits<TEmits>();
 
-const { $viewport } = useNuxtApp();
 
 const store = useCuttingStore();
 
@@ -40,7 +44,6 @@ const searchQuery = ref('');
 const materialOptions = computed(() => store.materials
   .map((m, i) => ({ label: `${m.title} (${m.length}x${m.width}x${m.thickness})`, value: i.toString()}))
 );
-const isMobile = computed(() => $viewport.isLessThan('tablet'))
 
 function openMaterialAddModal() {
   emits('openMaterialAddModal')
@@ -61,7 +64,7 @@ function setMaterial(value: any) {
       />
       <IDAutocomplete
         placeholder="Материал"
-        :model-value="store.pieces[pieceIndex].materialId"
+        :model-value="store.pieces[pieceIndex].materialId?.toString()"
         :options="[...materialOptions, {label: 'Добавить', value: 'add', onClick: openMaterialAddModal}]"
         :filterable="false"
         dense

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import {ELayoutMethod, useCuttingStore} from '~/stores/useCuttingStore';
-import {alignPieces} from "~/services/alignPieces";
-import {usePiecesDrawing} from "~/composables/usePiecesDrawing";
+import {ELayoutMethod, useCuttingStore} from '@/stores/useCuttingStore';
+import {alignPieces} from "@/services/alignPieces";
+import {usePiecesDrawing} from "@/composables/usePiecesDrawing";
+import {nextTick, onMounted, ref, watch} from "vue";
 
 type TProps = {
   ignoreLocalStorage?: boolean
@@ -58,9 +59,9 @@ watch([() => store.pieces, () => store.layoutMethod], () => {
 </script>
 
 <template>
-  <vuekonva-stage>
+  <v-stage>
 
-  </vuekonva-stage>
+  </v-stage>
   <canvas
     id="canvas"
     ref="canvas"

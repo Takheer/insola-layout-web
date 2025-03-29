@@ -1,9 +1,14 @@
 <script setup lang="ts">
-import IDModal from "~/components/ui/IDModal.vue";
-import { type TCuttingPiece, useCuttingStore } from "~/stores/useCuttingStore";
-import SlotSelector from "~/components/SlotSelector.vue";
-import IDTextInput from "~/components/ui/IDTextInput.vue";
+import IDModal from "@/components/ui/IDModal.vue";
+import { type TCuttingPiece, useCuttingStore } from "@/stores/useCuttingStore";
+import SlotSelector from "@/components/SlotSelector.vue";
+import IDTextInput from "@/components/ui/IDTextInput.vue";
 import { vMaska } from "maska/vue"
+import {computed, nextTick, onUpdated, ref, watch} from "vue";
+
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const isMobile = breakpoints.smaller('lg')
 
 type TEmits = {
   (e: 'setSlots', val: any): void
@@ -26,9 +31,6 @@ const localSlots = ref({
   height: [0, 0]
 })
 
-const { $viewport } = useNuxtApp();
-
-const isMobile = computed(() => $viewport.isLessThan('tablet'))
 
 const baseWidth = computed(() => isMobile.value ? 180 : 460)
 

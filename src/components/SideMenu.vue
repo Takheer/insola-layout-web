@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import IDTextInput from "~/components/ui/IDTextInput.vue";
-import IDSwitch from "~/components/ui/IDSwitch.vue";
-import {useCuttingStore} from "~/stores/useCuttingStore";
+import IDTextInput from "@/components/ui/IDTextInput.vue";
+import IDSwitch from "@/components/ui/IDSwitch.vue";
+import {ELayoutMethod, useCuttingStore} from "@/stores/useCuttingStore";
+
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const isMobile = breakpoints.smaller('lg')
 
 type TProps = {
   selectedTab: number | null
@@ -13,8 +17,6 @@ const props = withDefaults(defineProps<TProps>(), {
 const menuClass = "flex flex-col gap-4 p-4 pb-2 bg-white shadow-lg rounded-lg text-sm"
 
 const store = useCuttingStore();
-const { $viewport } = useNuxtApp();
-const isMobile = $viewport.isLessThan('tablet')
 
 const alignmentOptions = [
   {id: ELayoutMethod.HORIZONTAL, value: 'Ширине', selected: true},

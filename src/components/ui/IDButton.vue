@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {PhCircleNotch} from "@phosphor-icons/vue";
+import {computed} from "vue";
 
 type TProps = {
   to?: string
@@ -52,14 +53,14 @@ const emits = defineEmits<TEmits>();
 </script>
 
 <template>
-  <NuxtLink
+  <a
     v-if="to"
     :class="[btnClass, widthClass]"
-    :to="to"
+    :href="to"
   >
     <PhCircleNotch :size="iconSize[size]" v-if="loading" class="animate-spin" />
     <slot v-else />
-  </NuxtLink>
+  </a>
   <button
     v-else
     :class="[btnClass, widthClass]"

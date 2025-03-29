@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import {computed} from "vue";
+
 type TProps = {
   size: number
   position: 'top' | 'bottom' | 'right' | 'left'

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { PhPlus } from "@phosphor-icons/vue";
-import IDButton from "~/components/ui/IDButton.vue";
-import {type TCuttingPiece, useCuttingStore} from "~/stores/useCuttingStore";
-import SlotsSelectModal from "~/components/SlotsSelectModal.vue";
-import PieceInput from "~/components/PieceInput.vue";
-
+import IDButton from "@/components/ui/IDButton.vue";
+import {type TCuttingPiece, useCuttingStore} from "@/stores/useCuttingStore";
+import SlotsSelectModal from "@/components/SlotsSelectModal.vue";
+import PieceInput from "@/components/PieceInput.vue";
+import {onMounted, ref} from "vue";
 
 const store = useCuttingStore()
 

@@ -7,13 +7,13 @@ defineProps<TProps>();
 </script>
 
 <template>
-  <NuxtLink
-    :to="to"
+  <a
+    :href="to"
     :rel="rel"
     class="hover:text-orange-600 transition-all"
   >
     <slot></slot>
-  </NuxtLink>
+  </a>
 </template>
 
 <style lang="scss">

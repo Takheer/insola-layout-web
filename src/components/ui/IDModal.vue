@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, watch } from 'vue';
+import {computed, ref, watch} from 'vue';
 import {PhX} from "@phosphor-icons/vue";
-import {useOverlay} from "~/components/ui/composables/useOverlay"
+import {useOverlay} from "@/components/ui/composables/useOverlay"
 
 const props = withDefaults(defineProps<TProps>(), { modelValue: undefined });
 
