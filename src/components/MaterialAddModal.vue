@@ -5,6 +5,7 @@ import IDTextInput from "@/components/ui/IDTextInput.vue";
 import IDButton from "@/components/ui/IDButton.vue";
 import useVuelidate from "@vuelidate/core";
 import { required, numeric } from "@/utils/validators";
+import {ref} from "vue";
 
 const model = defineModel()
 

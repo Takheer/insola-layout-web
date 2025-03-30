@@ -21,7 +21,7 @@ const store = useCuttingStore()
       <div class="flex flex-row gap-2 p-4 w-full">
         <AddPiecesScreen v-if="store.pieces.length === 0" />
         <PiecesList v-else class="overflow-y-auto transition-all" />
-        <MainCanvas v-if="store.pieces.length > 0" class="overflow-y-auto transition-all" />
+        <MainCanvas v-if="store.pieces.length > 0" class="overflow-scroll transition-all" />
       </div>
     </div>
   </div>

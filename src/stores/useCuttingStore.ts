@@ -32,6 +32,19 @@ export type TMaterial = {
   length: number
 }
 
+export type TRawSheetSettings = {
+  sheetHeight: number,
+  sheetWidth: number,
+  padding: number,
+  sawDiskWidth: number
+}
+
+export type TSlotSettings = {
+  offset: number,
+  depth: number,
+  width: number
+}
+
 export const listOptions: TMaterial[] = [];
 
 export enum ELayoutMethod {
@@ -49,7 +62,13 @@ export const useCuttingStore = defineStore('cutting', {
       offset: 15,
       depth: 8,
       width: 4
-    }
+    } as TSlotSettings,
+    rawSheetSettings: {
+      sheetHeight: 2070,
+      sheetWidth: 2800,
+      padding: 10,
+      sawDiskWidth: 4
+    } as TRawSheetSettings
   }),
   getters: {
     rawSizes: (state) => state.pieces.map(p => [...Array(p.count).fill({ w: p.width, l: p.height, rot: p.rotatable})]),
