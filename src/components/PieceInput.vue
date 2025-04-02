@@ -42,7 +42,7 @@ const store = useCuttingStore();
 const xHovered = ref(false);
 const searchQuery = ref('');
 const materialOptions = computed(() => store.materials
-  .map((m, i) => ({ label: `${m.title} (${m.length}x${m.width}x${m.thickness})`, value: i.toString()}))
+  .map((m, i) => ({ label: m.title, value: i.toString()}))
 );
 
 function openMaterialAddModal() {

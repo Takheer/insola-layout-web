@@ -13,11 +13,18 @@ export type TPiecesLayout = {
   materialId?: number
 }
 
+export type TCuttingStats = {
+  cuttingLength: number
+}
+
 export const useAlignPieces = () => {
   const store = useCuttingStore()
 
-  function alignPieces(pieces: TCuttingPiece[], isVertical: boolean): { pieces: TPiecesLayout[], lists: TPiecesLayout[] } {
+  function alignPieces(pieces: TCuttingPiece[], isVertical: boolean): { pieces: TPiecesLayout[], lists: TPiecesLayout[], stats: TCuttingStats } {
     const result = [] as TPiecesLayout[]
+    const stats = {
+      cuttingLength : 0
+    } as TCuttingStats;
     const rawList = {
       h: store.rawSheetSettings.sheetHeight - 2 * store.rawSheetSettings.padding,
       w: store.rawSheetSettings.sheetWidth - 2 * store.rawSheetSettings.padding,
@@ -40,10 +47,12 @@ export const useAlignPieces = () => {
         lists.push({ ...rawList, rawListNumber: rawListsCount, materialId: piece.materialId })
         placement = placePiece(piece, lists, isVertical)
       }
+      stats.cuttingLength += piece.width + piece.height
+      console.log('stats.cuttingLength', stats.cuttingLength)
       result.push(placement!);
     }
 
-    return { pieces: result, lists }
+    return { pieces: result, lists, stats }
   }
 
   function placePiece(piece: TCuttingPiece, lists: TPiecesLayout[], isVertical: boolean) {

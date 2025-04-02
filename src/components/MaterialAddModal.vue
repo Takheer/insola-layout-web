@@ -10,18 +10,12 @@ import {ref} from "vue";
 const model = defineModel()
 
 const rules = {
-  title: { required },
-  length: { required, numeric },
-  width: { required, numeric },
-  thickness: { required, numeric },
+  title: { required }
 }
 
 const store = useCuttingStore();
 const form = ref({
-  title: '',
-  length: null,
-  width: null,
-  thickness: null,
+  title: ''
 })
 const v$ = useVuelidate(rules, form)
 
@@ -34,10 +28,7 @@ async function addMaterial(value: any) {
     return;
   }
   store.addMaterial({
-    title: form.value.title,
-    length: form.value.length!,
-    width: form.value.width!,
-    thickness: form.value.thickness!
+    title: form.value.title
   })
   model.value = false
 }
@@ -53,28 +44,6 @@ async function addMaterial(value: any) {
         :error="v$.title.$error"
         :error-message="v$.title.$errors?.[0]?.$message.toString()"
       />
-      <div class="flex flex-row items-center gap-2">
-        <IDTextInput
-          placeholder="Длина"
-          v-model="v$.length.$model"
-          :error="v$.length.$error"
-          :error-message="v$.length.$errors?.[0]?.$message.toString()"
-        />
-        x
-        <IDTextInput
-          placeholder="Ширина"
-          v-model="v$.width.$model"
-          :error="v$.width.$error"
-          :error-message="v$.width.$errors?.[0]?.$message.toString()"
-        />
-        x
-        <IDTextInput
-          placeholder="Толщина"
-          v-model="v$.thickness.$model"
-          :error="v$.thickness.$error"
-          :error-message="v$.thickness.$errors?.[0]?.$message.toString()"
-        />
-      </div>
       <IDButton
         variant="primary"
         full-width

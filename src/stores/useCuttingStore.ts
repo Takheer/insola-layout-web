@@ -27,14 +27,15 @@ type TRawList = {
 
 export type TMaterial = {
   title: string,
-  thickness: number,
-  width: number,
-  length: number
+  // thickness: number,
+  // width: number,
+  // length: number
 }
 
 export type TRawSheetSettings = {
   sheetHeight: number,
   sheetWidth: number,
+  sheetThickness: number,
   padding: number,
   sawDiskWidth: number
 }
@@ -58,6 +59,8 @@ export const useCuttingStore = defineStore('cutting', {
     layoutMethod: ELayoutMethod.HORIZONTAL as ELayoutMethod,
     materials: listOptions,
     rawLists: [{}] as TRawList[],
+    totalSheetsCount: 0,
+    cuttingLength: 0,
     slotSettings: {
       offset: 15,
       depth: 8,
@@ -66,6 +69,7 @@ export const useCuttingStore = defineStore('cutting', {
     rawSheetSettings: {
       sheetHeight: 2070,
       sheetWidth: 2800,
+      sheetThickness: 16,
       padding: 10,
       sawDiskWidth: 4
     } as TRawSheetSettings
@@ -74,7 +78,8 @@ export const useCuttingStore = defineStore('cutting', {
     rawSizes: (state) => state.pieces.map(p => [...Array(p.count).fill({ w: p.width, l: p.height, rot: p.rotatable})]),
     getMaterialById: (state) => (id: number|undefined) => {
       return (id || (id === 0)) ? state.materials?.[id] : null
-    }
+    },
+    rawSheetArea: (state) => state.rawSheetSettings.sheetHeight * state.rawSheetSettings.sheetWidth / 1e6,
   },
   actions: {
     addNewPiece() {
@@ -97,6 +102,9 @@ export const useCuttingStore = defineStore('cutting', {
         materialId: lastPiece?.materialId,
         materialName: lastPiece?.materialName ?? ''
       })
+    },
+    loadPieces() {
+      this.pieces = JSON.parse(localStorage.getItem('pieces') ?? '[]')
     },
     loadMaterials() {
       this.materials = JSON.parse(localStorage.getItem('materials') ?? '[]')

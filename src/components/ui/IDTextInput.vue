@@ -5,7 +5,7 @@ const model = defineModel()
 
 function update(e: Event) {
   const target = e.target as HTMLTextAreaElement
-  model.value = target.value
+  model.value = isNaN(Number(target.value)) ? target.value : Number(target.value)
 }
 
 const input = ref<HTMLInputElement | null>(null);

@@ -26,7 +26,7 @@ onMounted(async () => {
     }
   }
 
-  const {pieces: rawPieces, lists: rawLists} = alignPieces(store.pieces, store.layoutMethod === ELayoutMethod.VERTICAL);
+  const {pieces: rawPieces, lists: rawLists, stats} = alignPieces(store.pieces, store.layoutMethod === ELayoutMethod.VERTICAL);
   const {pieces: drawablePieces, sheets: drawableSheets} = getDrawablePiecesAndSheets(rawPieces, rawLists)
   lists.value = drawableSheets;
   pieces.value = drawablePieces
@@ -56,16 +56,17 @@ const handleDragend = () => {
   dragItemId.value = null;
 };
 
-watch([() => store.pieces, () => store.layoutMethod], () => {
+watch([() => store.pieces, () => store.layoutMethod, () => store.rawSheetSettings], () => {
   if (store.pieces.length) {
     localStorage.setItem('pieces', JSON.stringify(store.pieces))
   }
 
-  const {pieces: rawPieces, lists: rawLists} = alignPieces(store.pieces, store.layoutMethod === ELayoutMethod.VERTICAL);
+  const {pieces: rawPieces, lists: rawLists, stats} = alignPieces(store.pieces, store.layoutMethod === ELayoutMethod.VERTICAL);
+  store.totalSheetsCount = rawPieces.reduce((prev, curr) => curr.rawListNumber > prev ? curr.rawListNumber : prev, 0) + 1
+  store.cuttingLength = stats.cuttingLength
   const {pieces: drawablePieces, sheets: drawableSheets} = getDrawablePiecesAndSheets(rawPieces, rawLists)
   lists.value = drawableSheets;
   pieces.value = drawablePieces
-  console.log({pieces: pieces.value, sheets: lists.value})
 
   const rawListsIndices: number[] = [];
   store.rawLists = rawLists.map(list => {
@@ -82,52 +83,42 @@ watch([() => store.pieces, () => store.layoutMethod], () => {
 </script>
 
 <template>
-  <v-stage
-    ref="stage"
-    :config="stageSize"
-    @dragstart="handleDragstart"
-    @dragend="handleDragend"
-  >
-    <v-layer ref="layer">
-      <v-rect
-        v-for="(item, i) in pieces"
-        :key="i"
-        :config="{
+  <div class="overflow-y-auto" :style="{minWidth: `${canvasWidth}px`}">
+    <v-stage
+      ref="stage"
+      :config="stageSize"
+      @dragstart="handleDragstart"
+      @dragend="handleDragend"
+    >
+      <v-layer ref="layer">
+        <v-rect
+          v-for="(item, i) in pieces"
+          :key="i"
+          :config="{
           x: item.x,
           y: item.y,
           width: item.w,
           height: item.h,
           fill: '#89b717',
           opacity: 0.8,
-          draggable: true,
-          scaleX: dragItemId === item.id ? item.scale * 1.1 : item.scale,
-          scaleY: dragItemId === item.id ? item.scale * 1.1 : item.scale,
+          draggable: true
         }"
-      />
-      <v-rect
-        v-for="(item, i) in lists"
-        :key="i"
-        :config="{
+        />
+        <v-rect
+          v-for="(item, i) in lists"
+          :key="i"
+          :config="{
           x: item.x,
           y: item.y,
           width: item.w,
           height: item.h,
           fill: '#6db8c9',
-          opacity: 0.6,
-          scaleX: dragItemId === item.id ? item.scale * 1.1 : item.scale,
-          scaleY: dragItemId === item.id ? item.scale * 1.1 : item.scale,
+          opacity: 0.6
         }"
-      />
-    </v-layer>
-  </v-stage>
-<!--  <canvas-->
-<!--    id="canvas"-->
-<!--    ref="canvas"-->
-<!--    :height="canvasHeight"-->
-<!--    :width="canvasWidth"-->
-<!--    :style="`width: ${canvasWidth}px; height: ${canvasHeight}px`"-->
-<!--    class="mb-24"-->
-<!--  />-->
+        />
+      </v-layer>
+    </v-stage>
+  </div>
 </template>
 
 <style lang="scss">

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import {PhGear, PhSidebarSimple} from "@phosphor-icons/vue";
+import {PhExport, PhGear, PhSidebarSimple} from "@phosphor-icons/vue";
 
 const tabClass = "flex flex-row w-fit gap-2 px-2 py-1 rounded-lg cursor-pointer";
 
@@ -39,6 +39,13 @@ function setSelectedTab(i: number) {
     >
       <PhSidebarSimple size="20" />
       Пазы
+    </div>
+    <div
+      :class="[tabClass, selectedTab === 2 ? 'bg-white' : '']"
+      @click="setSelectedTab(2)"
+    >
+      <PhExport size="20" />
+      Скачать
     </div>
   </div>
 </div>

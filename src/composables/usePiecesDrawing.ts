@@ -2,29 +2,32 @@ import { type TPiecesLayout } from "@/services/alignPieces";
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import {computed, nextTick, ref} from "vue";
 import type {TRawSheetSettings} from "@/stores/useCuttingStore.ts";
+import {useCuttingStore} from "@/stores/useCuttingStore.ts";
 
-export const usePiecesDrawing = (settings: TRawSheetSettings) => {
+export const usePiecesDrawing = () => {
   const breakpoints = useBreakpoints(breakpointsTailwind)
   const isMobile = breakpoints.smaller('lg')
+  const store = useCuttingStore()
 
-  const LIST_BIGGER = settings.sheetWidth - 2 * settings.padding;
-  const LIST_LESSER = settings.sheetHeight - 2 * settings.padding;
+  const LIST_BIGGER = computed(() => store.rawSheetSettings.sheetWidth - 2 * store.rawSheetSettings.padding);
+  const LIST_LESSER = computed(() => store.rawSheetSettings.sheetHeight - 2 * store.rawSheetSettings.padding);
 
-  const aspectRatio = LIST_BIGGER/LIST_LESSER;
-  const rawListHeightPx = () => isMobile.value ? 180 : 400;
+  const aspectRatio = computed(() => LIST_BIGGER.value/LIST_LESSER.value);
+  const rawListWidthPx = computed(() => isMobile.value ? 240 : 480);
+  const rawListHeightPx = computed(() => rawListWidthPx.value / aspectRatio.value);
 
-  const canvasHeight = ref(rawListHeightPx())
-  const canvasWidth = ref(rawListHeightPx() * aspectRatio);
+  const canvasHeight = ref(rawListHeightPx.value)
+  const canvasWidth = computed(() => rawListWidthPx.value);
 
   function getDrawablePiece(piece: TPiecesLayout): TPiecesLayout {
-    const offsetY = piece.rawListNumber * (rawListHeightPx() + 24);
+    const offsetY = piece.rawListNumber * (rawListHeightPx.value + 24);
 
     return {
       ...piece,
       x: piece.x * canvasWidth.value / piece.rawListWidth,
-      y: piece.y * (canvasWidth.value / aspectRatio) / piece.rawListHeight + offsetY,
+      y: piece.y * (canvasWidth.value / aspectRatio.value) / piece.rawListHeight + offsetY,
       w: piece.w * canvasWidth.value / piece.rawListWidth,
-      h: piece.h * (canvasWidth.value / aspectRatio) / piece.rawListHeight
+      h: piece.h * (canvasWidth.value / aspectRatio.value) / piece.rawListHeight
     }
 
     // if (piece.w >= 200 && piece.h >= 60) {
@@ -43,7 +46,7 @@ export const usePiecesDrawing = (settings: TRawSheetSettings) => {
 
   function getDrawablePiecesAndSheets(pieces: TPiecesLayout[], sheets: TPiecesLayout[]) {
     const maxList = Math.max(...sheets.map(l => l.rawListNumber));
-    canvasHeight.value = (maxList + 1) * rawListHeightPx() + 32 * maxList
+    canvasHeight.value = (maxList + 1) * rawListHeightPx.value + 32 * maxList
     return {
       pieces: pieces.map(p => getDrawablePiece(p)),
       sheets: sheets.map(p => getDrawablePiece(p)),
