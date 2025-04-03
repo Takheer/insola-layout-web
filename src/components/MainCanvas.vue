@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<TProps>(), {
 const store = useCuttingStore();
 
 const { alignPieces } = useAlignPieces()
-const { canvasHeight, canvasWidth, getDrawablePiecesAndSheets } = usePiecesDrawing(store.rawSheetSettings);
+const { canvasHeight, canvasWidth, getDrawablePiecesAndSheets } = usePiecesDrawing();
 
 onMounted(async () => {
   if (localStorage.getItem('pieces') && !props.ignoreLocalStorage) {
@@ -92,6 +92,18 @@ watch([() => store.pieces, () => store.layoutMethod, () => store.rawSheetSetting
     >
       <v-layer ref="layer">
         <v-rect
+          v-for="(item, i) in lists"
+          :key="i"
+          :config="{
+          x: item.x,
+          y: item.y,
+          width: item.w,
+          height: item.h,
+          fill: '#6db8c9',
+          opacity: 0.6
+        }"
+        />
+        <v-rect
           v-for="(item, i) in pieces"
           :key="i"
           :config="{
@@ -102,18 +114,6 @@ watch([() => store.pieces, () => store.layoutMethod, () => store.rawSheetSetting
           fill: '#89b717',
           opacity: 0.8,
           draggable: true
-        }"
-        />
-        <v-rect
-          v-for="(item, i) in lists"
-          :key="i"
-          :config="{
-          x: item.x,
-          y: item.y,
-          width: item.w,
-          height: item.h,
-          fill: '#6db8c9',
-          opacity: 0.6
         }"
         />
       </v-layer>

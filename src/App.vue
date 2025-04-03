@@ -6,13 +6,17 @@ import PiecesList from "@/components/PiecesList.vue";
 import MainCanvas from "@/components/MainCanvas.vue";
 import {onMounted, ref} from "vue";
 import {useCuttingStore} from "@/stores/useCuttingStore.ts";
-import {useLayoutToPdf} from "@/services/layoutToPdf";
 
 const selectedTab = ref(null);
 const store = useCuttingStore()
 
 onMounted(() => {
   store.loadPieces()
+  store.loadSettings()
+})
+
+store.$subscribe(() => {
+  store.saveSettings()
 })
 </script>
 

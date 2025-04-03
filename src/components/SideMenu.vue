@@ -7,6 +7,7 @@ import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import IDButton from "@/components/ui/IDButton.vue";
 import {PhFilePdf} from "@phosphor-icons/vue";
 import {useLayoutToPdf} from "@/services/layoutToPdf";
+import {onUpdated} from "vue";
 
 const layoutToPdf = useLayoutToPdf()
 const breakpoints = useBreakpoints(breakpointsTailwind)
@@ -19,14 +20,14 @@ const props = withDefaults(defineProps<TProps>(), {
   selectedTab: null
 });
 
-const menuClass = "flex flex-col gap-2 p-1 pb-2"
+const menuClass = "flex flex-col gap-2"
 const cardClass = "flex flex-col gap-2 p-4 pb-2 bg-white shadow-lg rounded-lg text-sm"
 
 const store = useCuttingStore();
 
 const alignmentOptions = [
-  {id: ELayoutMethod.HORIZONTAL, value: 'Ширине', selected: true},
-  {id: ELayoutMethod.VERTICAL, value: 'Высоте'}
+  {id: ELayoutMethod.HORIZONTAL, value: 'Ширине', selected: store.layoutMethod === ELayoutMethod.HORIZONTAL},
+  {id: ELayoutMethod.VERTICAL, value: 'Высоте', selected: store.layoutMethod === ELayoutMethod.VERTICAL}
 ];
 
 function downloadPdf() {
@@ -57,14 +58,18 @@ function downloadPdf() {
     }
   })
 }
+
+onUpdated(() => {
+  store.saveSettings()
+})
 </script>
 
 <template>
   <div
-    class="flex flex-col gap-4 bg-gray-200 p-2 w-80 h-[96vh] overflow-hidden transition-all"
+    class="flex flex-col gap-2 bg-gray-200 px-2 w-80 h-[96vh] overflow-hidden transition-all"
     v-if="selectedTab !== null"
   >
-    <div class="overflow-auto">
+    <div class="h-full overflow-auto">
       <div :class="menuClass" v-if="selectedTab === 0">
         <div :class="cardClass">
           <h3 class="pb-2">Метод раскроя</h3>
@@ -111,7 +116,7 @@ function downloadPdf() {
           @click="downloadPdf"
         >
           <PhFilePdf size="20" />
-          PDF
+          Карту раскроя в PDF
         </IDButton>
       </div>
     </div>
