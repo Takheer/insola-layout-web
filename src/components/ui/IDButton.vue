@@ -8,11 +8,14 @@ type TProps = {
   fullWidth?: boolean
   size?: 'lg' | 'md' | 'sm'
   loading?: boolean
+  dense?: boolean
 };
+
 const props = withDefaults(defineProps<TProps>(), {
   variant: 'primary',
   fullWidth: false,
-  size: 'md'
+  size: 'md',
+  dense: false
 });
 
 const btnClasses = {

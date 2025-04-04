@@ -15,7 +15,6 @@ export type TCuttingPiece = {
     width: number[]
     height: number[]
   }
-  materialId?: number
   materialName?: string
 }
 
@@ -99,7 +98,6 @@ export const useCuttingStore = defineStore('cutting', {
           width: [0,0],
           height: [0,0]
         },
-        materialId: lastPiece?.materialId,
         materialName: lastPiece?.materialName ?? ''
       })
     },
