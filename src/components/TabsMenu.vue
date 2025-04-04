@@ -1,11 +1,12 @@
 <script setup lang="ts">
 
-import {PhExport, PhGear, PhPlanet, PhSidebarSimple, PhUser} from "@phosphor-icons/vue";
+import {PhCheck, PhExport, PhGear, PhGlobe, PhSidebarSimple, PhUser} from "@phosphor-icons/vue";
 import {useRoute, useRouter} from "vue-router";
 import IDBaseLink from "@/components/ui/IDBaseLink.vue";
 import IDButton from "@/components/ui/IDButton.vue";
 import {useApi} from "@/services/useApi.ts";
 import {useCuttingStore} from "@/stores/useCuttingStore.ts";
+import {useProjectsStore} from "@/stores/useProjectsStore.ts";
 
 const tabClass = "flex flex-row w-fit gap-2 px-2 py-1 rounded-lg cursor-pointer";
 
@@ -22,6 +23,7 @@ type TEmits = {
 const emits = defineEmits<TEmits>();
 
 const store = useCuttingStore();
+const projectsStore = useProjectsStore();
 const api = useApi();
 const router = useRouter();
 const route = useRoute();
@@ -68,13 +70,21 @@ function setSelectedTab(i: number) {
       <PhExport size="20" />
       Скачать
     </div>
+    <div
+      v-if="projectsStore.isProjectPublished(route.params.uuid as string)"
+      class="flex flex-row items-center gap-1 ml-2 text-gray-600"
+    >
+      <PhCheck color="green" size="20" />
+      Опубликован!
+    </div>
     <IDButton
+      v-else
       variant="primary"
       size="sm"
-      class="flex flex-row gap-2"
+      class="flex flex-row gap-2 ml-2"
       @click="publish"
     >
-      <PhPlanet size="20" />
+      <PhGlobe size="20" />
       Опубликовать
     </IDButton>
   </div>

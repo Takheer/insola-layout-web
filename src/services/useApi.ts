@@ -54,12 +54,26 @@ export const useApi = () => {
           rotatable: p.rotatable
         })),
       })
-    });;
+    });
     return {
       status: res.status,
       ...(await res.json())
     }
   }
 
-  return { createNewProject }
+  async function getUserProjects() {
+    const res = await fetch(apiUrl + `/user/projects`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${getCookie('token')}`
+      }
+    });
+
+    return {
+      status: res.status,
+      projects: await res.json()
+    }
+  }
+
+  return { createNewProject, getUserProjects }
 }

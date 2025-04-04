@@ -6,16 +6,24 @@ import PiecesList from "@/components/PiecesList.vue";
 import MainCanvas from "@/components/MainCanvas.vue";
 import {onMounted, ref} from "vue";
 import {useCuttingStore} from "@/stores/useCuttingStore.ts";
+import {useProjectsStore} from "@/stores/useProjectsStore.ts";
+import {useApi} from "@/services/useApi.ts";
 
 const selectedTab = ref(null);
 const store = useCuttingStore()
+const projectsStore = useProjectsStore();
+const api = useApi();
 
-onMounted(() => {
+onMounted(async () => {
   store.loadPieces()
   store.loadSettings()
   if (store.pieces.length === 0) {
     store.addNewPiece();
-
+  }
+  if (projectsStore.projectsList.length === 0) {
+    const data = await api.getUserProjects();
+    console.log({data})
+    projectsStore.projectsList = data.projects
   }
 })
 

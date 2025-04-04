@@ -1,23 +1,9 @@
+import type {TCuttingPiece} from "@/stores/useCuttingStore.ts";
+
 type SctDetail = {
   width: number
   length: number
   count: number
-}
-
-type SctParams = {
-  listLength: number
-  listWidth: number
-  orderName?: string
-  createdAt: string
-  orderReadyAt?: string
-  materialName: string
-  listThickness: number
-  edge1Thickness: number
-  edge1Name?: string
-  edge2Thickness: number
-  edge2Name?: string
-  orderInfo?: string
-  details: SctDetail[]
 }
 
 export const useAuthApi = () => {

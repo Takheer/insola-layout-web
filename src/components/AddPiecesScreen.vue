@@ -27,7 +27,7 @@ async function createNewProject() {
     full-width
   >
     <PhPlus size="32" />
-    Добавить деталь
+    Новый проект
   </IDButton>
   <div></div>
   <IDButton
