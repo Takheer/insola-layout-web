@@ -7,13 +7,12 @@ const router = useRouter();
 
 async function createNewProject() {
   let uuid;
-  if (localStorage.getItem('projectUuid')) {
-    uuid = localStorage.getItem('projectUuid')
+  if (localStorage.getItem('localProjectUuid')) {
+    uuid = await JSON.parse(localStorage.getItem('localProjectUuid')!)
   } else {
     uuid = crypto.randomUUID()
-    localStorage.setItem('projectUuid', JSON.stringify(crypto.randomUUID()))
+    localStorage.setItem('localProjectUuid', JSON.stringify(crypto.randomUUID()))
   }
-  uuid = await JSON.parse(uuid!)
   await router.push(`/${uuid}`)
 }
 </script>

@@ -1,28 +1,33 @@
 <script setup lang="ts">
 import TabsMenu from "@/components/TabsMenu.vue";
 import SideMenu from "@/components/SideMenu.vue";
-import AddPiecesScreen from "@/components/AddPiecesScreen.vue";
 import PiecesList from "@/components/PiecesList.vue";
 import MainCanvas from "@/components/MainCanvas.vue";
 import {onMounted, ref} from "vue";
 import {useCuttingStore} from "@/stores/useCuttingStore.ts";
 import {useProjectsStore} from "@/stores/useProjectsStore.ts";
-import {useApi} from "@/services/useApi.ts";
+import {piecesFromDto, useApi} from "@/services/useApi.ts";
+import {useRoute} from "vue-router";
 
 const selectedTab = ref(null);
 const store = useCuttingStore()
 const projectsStore = useProjectsStore();
 const api = useApi();
+const route = useRoute();
 
 onMounted(async () => {
   store.loadPieces()
   store.loadSettings()
+  const data = await api.getProjectByUuid(route.params.uuid as string)
+
+  if (data.project.pieces) {
+    store.pieces = piecesFromDto(data.project.pieces)
+  }
   if (store.pieces.length === 0) {
     store.addNewPiece();
   }
   if (projectsStore.projectsList.length === 0) {
     const data = await api.getUserProjects();
-    console.log({data})
     projectsStore.projectsList = data.projects
   }
 })

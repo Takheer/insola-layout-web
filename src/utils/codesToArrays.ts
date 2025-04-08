@@ -1,4 +1,4 @@
-import {edgeValues} from "~/components/Russpeel/consts";
+import {edgeValues} from "@/components/consts";
 
 export const edgeCodesToEdges = {
   5: [edgeValues.THIN, edgeValues.THICK],

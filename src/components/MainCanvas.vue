@@ -3,6 +3,10 @@ import {ELayoutMethod, useCuttingStore} from '@/stores/useCuttingStore';
 import { type TPiecesLayout, useAlignPieces} from "@/services/alignPieces";
 import {usePiecesDrawing} from "@/composables/usePiecesDrawing";
 import {onMounted, ref, watch} from "vue";
+import {useProjectsStore} from "@/stores/useProjectsStore.ts";
+import {useRoute} from "vue-router";
+import {useApi} from "@/services/useApi.ts";
+import {debounce} from "@/utils/debounce.ts";
 
 type TProps = {
   ignoreLocalStorage?: boolean
@@ -12,6 +16,9 @@ const props = withDefaults(defineProps<TProps>(), {
 });
 
 const store = useCuttingStore();
+const projectsStore = useProjectsStore();
+const route = useRoute();
+const api = useApi();
 
 const { alignPieces } = useAlignPieces()
 const { canvasHeight, canvasWidth, getDrawablePiecesAndSheets } = usePiecesDrawing();
@@ -56,28 +63,27 @@ const handleDragend = () => {
   dragItemId.value = null;
 };
 
-watch([() => store.pieces, () => store.layoutMethod, () => store.rawSheetSettings], () => {
+const updateProjectDebounced = debounce(api.updateProject, 700)
+
+watch([() => store.pieces, () => store.layoutMethod, () => store.rawSheetSettings, () => store.slotSettings], () => {
   if (store.pieces.length) {
     localStorage.setItem('pieces', JSON.stringify(store.pieces))
+  }
+
+  if (projectsStore.isProjectPublished(route.params.uuid as string)) {
+    updateProjectDebounced(route.params.uuid as string, store)
+    localStorage.removeItem('localProjectUuid')
   }
 
   const {pieces: rawPieces, lists: rawLists, stats} = alignPieces(store.pieces, store.layoutMethod === ELayoutMethod.VERTICAL);
   store.totalSheetsCount = rawPieces.reduce((prev, curr) => curr.rawListNumber > prev ? curr.rawListNumber : prev, 0) + 1
   store.cuttingLength = stats.cuttingLength
+
   const {pieces: drawablePieces, sheets: drawableSheets} = getDrawablePiecesAndSheets(rawPieces, rawLists)
   lists.value = drawableSheets;
   pieces.value = drawablePieces
 
-  const rawListsIndices: number[] = [];
-  store.rawLists = rawLists.map(list => {
-    if (rawListsIndices.includes(list.rawListNumber)) {
-      return null;
-    }
-    rawListsIndices.push(list.rawListNumber);
-    return {index: list.rawListNumber, materialId: list.materialId, type: store.getMaterialById(list.materialId)?.type}
-  }).filter(l => !!l);
-
-}, { deep: true })
+}, { deep: true, immediate: true })
 
 
 </script>

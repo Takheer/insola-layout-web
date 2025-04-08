@@ -30,12 +30,16 @@ const route = useRoute();
 
 async function publish() {
   const data = await api.createNewProject(
-    JSON.parse(localStorage.getItem('projectUuid')!),
+    JSON.parse(localStorage.getItem('localProjectUuid')!),
     store
   )
 
   if (data.status === 401) {
     await router.push(`/login?redirect_uri=${route.fullPath}`)
+  }
+  if (data) {
+    projectsStore.projectsList.push(data.project)
+    localStorage.removeItem('localProjectUuid')
   }
 }
 

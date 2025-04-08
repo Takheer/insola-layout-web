@@ -1,0 +1,12 @@
+{
+  "short_name": "ID.Layout",
+  "name": "Insola Layout",
+  "start_url":"/",
+  "display": "standalone",
+  "theme_color": "#2979FF",
+  "background_color": "#fff",
+  "orientation": "portrait",
+  "icons": [
+    { "sizes": "200x200", "src": "/favicon.png" }
+  ]
+}

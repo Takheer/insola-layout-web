@@ -19,8 +19,8 @@ onMounted(async () => {
     console.log({data})
     store.projectsList = data.projects
   }
-  if (localStorage.getItem('projectUuid')) {
-    projectUuid.value = JSON.parse(localStorage.getItem('projectUuid')!)
+  if (localStorage.getItem('localProjectUuid')) {
+    projectUuid.value = JSON.parse(localStorage.getItem('localProjectUuid')!)
   }
 })
 </script>
@@ -34,7 +34,7 @@ onMounted(async () => {
     <div
       v-for="project of store.projectsList"
       class="flex flex-col gap-2 p-2 bg-white rounded-lg shadow-lg cursor-pointer hover:dark:bg-gray-100 transition-all"
-      @click="router.push(`/${projectUuid}`)"
+      @click="router.push(`/${project.uuid}`)"
     >
       <div class="w-60 text-ellipsis whitespace-nowrap overflow-hidden">
         {{ project.uuid }}
@@ -44,9 +44,8 @@ onMounted(async () => {
       </div>
     </div>
   </div>
-  <AddPiecesScreen v-if="store.isProjectPublished(projectUuid)" />
   <div
-    v-else
+    v-if="projectUuid && !store.isProjectPublished(projectUuid)"
     class="flex flex-col gap-4 p-12 w-full items-center"
   >
     У вас уже есть неопубликованный проект. Чтобы создать новый, войдите или зарегистрируйтесь, а затем опубликуйте текущий проект.
@@ -55,6 +54,7 @@ onMounted(async () => {
       <IDBaseLink :to="`/${projectUuid}`">Вернуться к проекту</IDBaseLink>
     </div>
   </div>
+  <AddPiecesScreen v-else />
 </div>
 </template>
 
