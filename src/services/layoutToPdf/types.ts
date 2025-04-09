@@ -15,7 +15,11 @@ export type TOrderPdfData = {
   details: {
     count: number
     area: number
-  }
+  },
+  edges: {
+    edgeThinWidth: number
+    edgeThickWidth: number
+  },
   result: {
     cuttingLength: number
     edgeThickLength: number

@@ -42,6 +42,10 @@ function downloadPdf() {
       count: store.pieces.reduce((prev, curr) => prev + (curr.count ?? 0), 0),
       area: 5.43
     },
+    edges: {
+      edgeThinWidth: store.edgeSettings.edgeThinWidth,
+      edgeThickWidth: store.edgeSettings.edgeThickWidth
+    },
     result: {
       cuttingLength: store.cuttingLength / 1000,
       edgeThickLength: 23,

@@ -1,5 +1,4 @@
 import {defineStore} from "pinia";
-import type {ShallowRef} from "vue";
 
 export type TCuttingPiece = {
   name: string | null
@@ -66,6 +65,10 @@ export const useCuttingStore = defineStore('cutting', {
       depth: 8,
       width: 4
     } as TSlotSettings,
+    edgeSettings: {
+      edgeThickWidth: 2,
+      edgeThinWidth: 0.8
+    },
     rawSheetSettings: {
       sheetHeight: 2070,
       sheetWidth: 2800,

@@ -1,4 +1,4 @@
-import {edgeValues} from "@/components/consts";
+import {edgeValues} from "@/services/consts";
 
 export const edgeCodesToEdges = {
   5: [edgeValues.THIN, edgeValues.THICK],

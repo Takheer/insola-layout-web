@@ -45,7 +45,6 @@ export const useAlignPieces = () => {
         placement = placePiece(piece, lists, isVertical)
       }
       stats.cuttingLength += piece.width + piece.height
-      console.log('stats.cuttingLength', stats.cuttingLength)
       result.push(placement!);
     }
 

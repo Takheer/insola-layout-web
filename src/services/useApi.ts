@@ -1,4 +1,4 @@
-import {edgeValues} from "@/components/consts.ts";
+import {edgeValues} from "@/services/consts.ts";
 import {useCuttingStore} from "@/stores/useCuttingStore.ts";
 import {getCookie} from "@/utils/cookies.ts";
 import {edgeCodesToEdges, slotCodesToSlots} from "@/utils/codesToArrays.ts";
@@ -21,23 +21,23 @@ export const piecesFromDto = (pieces: any[]) => {
   return localPieces
 }
 
+export const getEdgeCode = (edges: number[]) => {
+  let code = 0;
+  if (edges.includes(edgeValues.THICK) && edges.includes(edgeValues.THIN)) {
+    return 5;
+  }
+
+  if (edges[0] === edgeValues.THIN || edges[1] === edgeValues.THIN) {
+    code += 2;
+  }
+  code += edges[0] === edgeValues.NO ? 0 : 1;
+  code += edges[1] === edgeValues.NO ? 0 : 1;
+
+  return code;
+}
+
 export const useApi = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
-
-  const getEdgeCode = (edges: number[]) => {
-    let code = 0;
-    if (edges.includes(edgeValues.THICK) && edges.includes(edgeValues.THIN)) {
-      return 5;
-    }
-
-    if (edges[0] === edgeValues.THIN || edges[1] === edgeValues.THIN) {
-      code += 2;
-    }
-    code += edges[0] === edgeValues.NO ? 0 : 1;
-    code += edges[1] === edgeValues.NO ? 0 : 1;
-
-    return code;
-  }
 
   const getSlotCode = (slots: (number|boolean)[]) => {
     return slots.reduce((prev: number, curr) => prev + (Boolean(curr) ? 1 : 0), 0)
