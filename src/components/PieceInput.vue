@@ -56,7 +56,7 @@ function setMaterial(value: any) {
 
 <template>
   <div class="flex flex-col gap-2 p-4 rounded border shadow">
-    <div class="flex flex-row gap-2">
+    <div class="flex flex-col md:flex-row gap-2">
       <IDTextInput
         v-model="piece.name"
         placeholder="Название (необязательно)"
@@ -72,51 +72,53 @@ function setMaterial(value: any) {
         @update:modelValue="setMaterial"
         @search="searchQuery = $event"
       />
-      <div class="flex flex-grow flex-col gap-2">
-        <IDTextInput
-          class="max-w-32"
-          v-model="piece.width"
-          v-maska="'####'"
-          dense
-          placeholder="Длина"
-        />
-        <div class="flex flex-row gap-2">
-          <EdgeSelector
-            v-model="piece.edges.width[0]"
-            class="w-[50%]"
+      <div class="flex flex-row gap-2">
+        <div class="flex flex-grow flex-col gap-2">
+          <IDTextInput
+            class="max-w-32"
+            v-model="piece.width"
+            v-maska="'####'"
+            dense
+            placeholder="Длина"
           />
-          <EdgeSelector
-            v-model="piece.edges.width[1]"
-            class="w-[50%]"
-          />
+          <div class="flex flex-row gap-2">
+            <EdgeSelector
+              v-model="piece.edges.width[0]"
+              class="w-[50%]"
+            />
+            <EdgeSelector
+              v-model="piece.edges.width[1]"
+              class="w-[50%]"
+            />
+          </div>
         </div>
-      </div>
-      <div
-        @mouseenter="xHovered = true"
-        @mouseleave="xHovered = false"
-        class="cursor-pointer py-2 hover:text-orange-600 transition-all"
-        @click="emits('swapDimensions')"
-      >
-        <PhArrowsLeftRight v-if="xHovered" />
-        <PhX v-else />
-      </div>
-      <div class="flex flex-col gap-2">
-        <IDTextInput
-          class="max-w-32"
-          v-model="piece.height"
-          v-maska="'####'"
-          dense
-          placeholder="Ширина"
-        />
-        <div class="flex flex-row gap-2">
-          <EdgeSelector
-            v-model="piece.edges.height[0]"
-            class="w-[50%]"
+        <div
+          @mouseenter="xHovered = true"
+          @mouseleave="xHovered = false"
+          class="cursor-pointer py-2 hover:text-orange-600 transition-all"
+          @click="emits('swapDimensions')"
+        >
+          <PhArrowsLeftRight v-if="xHovered" />
+          <PhX v-else />
+        </div>
+        <div class="flex flex-col gap-2">
+          <IDTextInput
+            class="max-w-32"
+            v-model="piece.height"
+            v-maska="'####'"
+            dense
+            placeholder="Ширина"
           />
-          <EdgeSelector
-            v-model="piece.edges.height[1]"
-            class="w-[50%]"
-          />
+          <div class="flex flex-row gap-2">
+            <EdgeSelector
+              v-model="piece.edges.height[0]"
+              class="w-[50%]"
+            />
+            <EdgeSelector
+              v-model="piece.edges.height[1]"
+              class="w-[50%]"
+            />
+          </div>
         </div>
       </div>
       <IDTextInput

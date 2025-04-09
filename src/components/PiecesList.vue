@@ -70,7 +70,7 @@ onMounted(() => {
 </script>
 
 <template>
-<div class="flex flex-col gap-2">
+<div class="flex flex-col gap-2 py-4">
   <PieceInput
     v-for="(piece, i) in store.pieces"
     :key="i"

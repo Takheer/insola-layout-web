@@ -49,9 +49,9 @@ function setSelectedTab(i: number) {
 </script>
 
 <template>
-<div class="flex flex-col gap-2 py-2 px-4 bg-gray-200 text-sm min-w-40">
+<div class="flex flex-col gap-2 px-4 bg-gray-200 text-sm min-w-40">
   <div
-    class="flex flex-row items-center gap-1 bg-gray-200 pt-1 rounded-t-lg"
+    class="flex flex-row items-center gap-1 bg-gray-200 pt-3 py-2 rounded-t-lg overflow-x-auto"
   >
     <div
       :class="[tabClass, selectedTab === 0 ? 'bg-white' : '']"

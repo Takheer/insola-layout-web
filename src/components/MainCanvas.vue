@@ -91,7 +91,7 @@ watch([() => store.pieces, () => store.layoutMethod, () => store.rawSheetSetting
 </script>
 
 <template>
-  <div class="overflow-y-auto" :style="{minWidth: `${canvasWidth}px`}">
+  <div class="overflow-y-auto pt-4" :style="{minWidth: `${canvasWidth}px`}">
     <v-stage
       ref="stage"
       :config="stageSize"
@@ -120,8 +120,7 @@ watch([() => store.pieces, () => store.layoutMethod, () => store.rawSheetSetting
           width: item.w,
           height: item.h,
           fill: '#89b717',
-          opacity: 0.8,
-          draggable: true
+          opacity: 0.8
         }"
         />
       </v-layer>
