@@ -3,27 +3,23 @@ import IDTextInput from "@/components/ui/IDTextInput.vue";
 import IDSwitch from "@/components/ui/IDSwitch.vue";
 import {ELayoutMethod, useCuttingStore} from "@/stores/useCuttingStore";
 
-import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import IDButton from "@/components/ui/IDButton.vue";
 import {PhFilePdf} from "@phosphor-icons/vue";
 import {useLayoutToPdf} from "@/services/layoutToPdf";
 import {onUpdated} from "vue";
 
+const store = useCuttingStore();
 const layoutToPdf = useLayoutToPdf()
-const breakpoints = useBreakpoints(breakpointsTailwind)
-const isMobile = breakpoints.smaller('lg')
 
 type TProps = {
   selectedTab: number | null
 };
-const props = withDefaults(defineProps<TProps>(), {
+withDefaults(defineProps<TProps>(), {
   selectedTab: null
 });
 
 const menuClass = "flex flex-col gap-2"
 const cardClass = "flex flex-col gap-2 p-4 pb-2 bg-white shadow-lg rounded-lg text-sm"
-
-const store = useCuttingStore();
 
 const alignmentOptions = [
   {id: ELayoutMethod.HORIZONTAL, value: 'Ширине', selected: store.layoutMethod === ELayoutMethod.HORIZONTAL},
@@ -55,7 +51,9 @@ function downloadPdf() {
       sheetsTotalArea: store.totalSheetsCount * store.rawSheetArea,
       residuesTotalArea: 0,
       junkTotalValue: 0
-    }
+    },
+    pieces: store.pieces,
+    layoutMethod: store.layoutMethod
   })
 }
 

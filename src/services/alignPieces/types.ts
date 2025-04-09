@@ -1,22 +1,3 @@
-export type TCuttingPiece = {
-  name: string | null
-  width: number
-  height: number
-  count: number
-  rotatable: boolean
-  sizeWithEdges: boolean
-  edges: {
-    width: number[]
-    height: number[]
-  }
-  slots: {
-    width: number[]
-    height: number[]
-  }
-  materialId?: number
-  materialName?: string
-}
-
 type TRawList = {
   index: number
   materialId?: number,

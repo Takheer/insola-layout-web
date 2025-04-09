@@ -1,4 +1,5 @@
 import {defineStore} from "pinia";
+import type {ShallowRef} from "vue";
 
 export type TCuttingPiece = {
   name: string | null

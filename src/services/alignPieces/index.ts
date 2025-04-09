@@ -1,5 +1,4 @@
-import type {TCuttingPiece} from "@/services/alignPieces/types";
-import type {TRawSheetSettings} from "@/stores/useCuttingStore.ts";
+import type {TCuttingPiece} from "@/stores/useCuttingStore.ts";
 import {useCuttingStore} from "@/stores/useCuttingStore.ts";
 
 export type TPiecesLayout = {
@@ -38,13 +37,11 @@ export const useAlignPieces = () => {
     pieces = pieces.map(p => [...Array(p.count).fill({...p, width: +p.width, height: +p.height })]).flat()
     pieces.sort((p1, p2) => p1.width * p1.height < p2.width * p2.height ? 1 : -1);
 
-    lists[0].materialId = pieces[0]?.materialId;
-
     for (let piece of pieces) {
       let placement = placePiece(piece, lists, isVertical);
       if (!placement) {
         rawListsCount++
-        lists.push({ ...rawList, rawListNumber: rawListsCount, materialId: piece.materialId })
+        lists.push({ ...rawList, rawListNumber: rawListsCount })
         placement = placePiece(piece, lists, isVertical)
       }
       stats.cuttingLength += piece.width + piece.height

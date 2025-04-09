@@ -2,7 +2,7 @@
 import {ELayoutMethod, useCuttingStore} from '@/stores/useCuttingStore';
 import { type TPiecesLayout, useAlignPieces} from "@/services/alignPieces";
 import {usePiecesDrawing} from "@/composables/usePiecesDrawing";
-import {onMounted, ref, watch} from "vue";
+import {onMounted, ref, useTemplateRef, watch} from "vue";
 import {useProjectsStore} from "@/stores/useProjectsStore.ts";
 import {useRoute} from "vue-router";
 import {useApi} from "@/services/useApi.ts";
@@ -14,6 +14,7 @@ type TProps = {
 const props = withDefaults(defineProps<TProps>(), {
   ignoreLocalStorage: false
 });
+const stage = useTemplateRef('stage')
 
 const store = useCuttingStore();
 const projectsStore = useProjectsStore();
@@ -24,6 +25,7 @@ const { alignPieces } = useAlignPieces()
 const { canvasHeight, canvasWidth, getDrawablePiecesAndSheets } = usePiecesDrawing();
 
 onMounted(async () => {
+  store.canvasRef = stage
   if (localStorage.getItem('pieces') && !props.ignoreLocalStorage) {
     store.pieces = await JSON.parse(localStorage.getItem('pieces') ?? '[]');
     for (let i = 0; i < store.pieces.length; i++) {

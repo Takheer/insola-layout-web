@@ -1,3 +1,6 @@
+import type {TCuttingPiece} from "@/stores/useCuttingStore.ts";
+import {ELayoutMethod} from "@/stores/useCuttingStore.ts";
+
 export type TOrderPdfData = {
   title: string
   materialName: string
@@ -22,5 +25,7 @@ export type TOrderPdfData = {
     sheetsTotalArea: number
     residuesTotalArea: number
     junkTotalValue: number
-  }
+  },
+  pieces: TCuttingPiece[],
+  layoutMethod: ELayoutMethod
 }
