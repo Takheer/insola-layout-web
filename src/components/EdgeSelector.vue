@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import IDPopup from "@/components/ui/IDPopup.vue";
 import {edgeValues} from "@/services/consts";
-import {ref} from "vue";
+import {computed, ref} from "vue";
 
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import {useCuttingStore} from "@/stores/useCuttingStore.ts";
@@ -11,7 +11,7 @@ const isMobile = breakpoints.smaller('lg')
 const model = defineModel()
 const store = useCuttingStore()
 
-const text = ref(0)
+const text = computed(() => model.value === edgeValues.THICK ? store.edgeSettings.edgeThickWidth : model.value === edgeValues.THIN ? store.edgeSettings.edgeThinWidth : 0)
 const hovered = ref(false)
 
 
@@ -19,16 +19,13 @@ function update() {
   switch (model.value) {
     case edgeValues.THIN:
       model.value = edgeValues.THICK;
-      text.value = store.edgeSettings.edgeThickWidth
       break;
     case edgeValues.THICK:
       model.value = edgeValues.NO;
-      text.value = 0
       break;
     case edgeValues.NO:
     default:
       model.value = edgeValues.THIN;
-      text.value = store.edgeSettings.edgeThinWidth
       break;
   }
 }
@@ -36,7 +33,7 @@ function update() {
 
 <template>
   <IDPopup
-    :text="model === edgeValues.THICK ? `Кромка ${store.edgeSettings.edgeThickWidth}мм` : model === edgeValues.THIN ? `Кромка ${store.edgeSettings.edgeThinWidth}мм` : 'Без кромки'"
+    :text="text ? `Кромка ${text}мм` : 'Без кромки'"
     size="sm"
   >
     <div

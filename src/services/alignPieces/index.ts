@@ -6,6 +6,8 @@ export type TPiecesLayout = {
   y: number
   h: number
   w: number
+  originalWidth?: number
+  originalHeight?: number
   rawListNumber: number
   rawListWidth: number
   rawListHeight: number

@@ -22,6 +22,13 @@ onMounted(async () => {
 
   if (data.project.pieces) {
     store.pieces = piecesFromDto(data.project.pieces)
+  } else if (localStorage.getItem('pieces')) {
+    store.pieces = await JSON.parse(localStorage.getItem('pieces') ?? '[]');
+    for (let i = 0; i < store.pieces.length; i++) {
+      if (!store.pieces[i].slots) {
+        store.pieces[i].slots = { width: [0, 0], height: [0, 0]}
+      }
+    }
   }
   if (store.pieces.length === 0) {
     store.addNewPiece();

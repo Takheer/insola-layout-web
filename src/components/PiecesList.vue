@@ -50,12 +50,6 @@ function openSlotsSelectModal(i: number) {
   isSlotsSelectModalEnabled.value = true
 }
 
-function setSelectedPieceMaterial(materialId: number) {
-  store.pieces[selectedPieceIndex.value].materialId = materialId;
-  store.pieces[selectedPieceIndex.value].materialName = store.getMaterialById(materialId).title;
-  isMaterialAddModalEnabled.value = false
-}
-
 function setSelectedPieceSlots(slots: {width: number[], height: number[]}) {
   store.pieces[selectedPieceIndex.value].slots = {
     width: [...slots.width],

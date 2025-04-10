@@ -8,12 +8,12 @@ export const piecesFromDto = (pieces: any[]) => {
   for (let i = 0; i < pieces.length; i++) {
     const p = pieces[i];
     p.edges = {
-      width: edgeCodesToEdges[p.edges_width_code as keyof typeof edgeCodesToEdges],
-      height: edgeCodesToEdges[p.edges_height_code as keyof typeof edgeCodesToEdges]
+      width: [...edgeCodesToEdges[p.edges_width_code as keyof typeof edgeCodesToEdges]],
+      height: [...edgeCodesToEdges[p.edges_height_code as keyof typeof edgeCodesToEdges]]
     };
     p.slots = {
-      width: slotCodesToSlots[(p.slots_width_code ?? 0) as keyof typeof slotCodesToSlots],
-      height: slotCodesToSlots[(p.slots_height_code ?? 0) as keyof typeof slotCodesToSlots]
+      width: [...slotCodesToSlots[(p.slots_width_code ?? 0) as keyof typeof slotCodesToSlots]],
+      height: [...slotCodesToSlots[(p.slots_height_code ?? 0) as keyof typeof slotCodesToSlots]]
     };
     localPieces.push(p)
   }

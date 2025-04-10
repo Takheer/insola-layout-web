@@ -15,6 +15,7 @@ const props = withDefaults(defineProps<TProps>(), {
   ignoreLocalStorage: false
 });
 const stage = useTemplateRef('stage')
+const tr1Ref = useTemplateRef('tr1Ref')
 
 const store = useCuttingStore();
 const projectsStore = useProjectsStore();
@@ -25,17 +26,7 @@ const { alignPieces } = useAlignPieces()
 const { canvasHeight, canvasWidth, getDrawablePiecesAndSheets } = usePiecesDrawing();
 
 onMounted(async () => {
-  store.canvasRef = stage
-  if (localStorage.getItem('pieces') && !props.ignoreLocalStorage) {
-    store.pieces = await JSON.parse(localStorage.getItem('pieces') ?? '[]');
-    for (let i = 0; i < store.pieces.length; i++) {
-      if (!store.pieces[i].slots) {
-        store.pieces[i].slots = { width: [0, 0], height: [0, 0]}
-      }
-    }
-  }
-
-  const {pieces: rawPieces, lists: rawLists, stats} = alignPieces(store.pieces, store.layoutMethod === ELayoutMethod.VERTICAL);
+  const {pieces: rawPieces, lists: rawLists} = alignPieces(store.pieces, store.layoutMethod === ELayoutMethod.VERTICAL);
   const {pieces: drawablePieces, sheets: drawableSheets} = getDrawablePiecesAndSheets(rawPieces, rawLists)
   lists.value = drawableSheets;
   pieces.value = drawablePieces
@@ -123,6 +114,20 @@ watch([() => store.pieces, () => store.layoutMethod, () => store.rawSheetSetting
           opacity: 0.8
         }"
         />
+        <v-text
+          v-for="(item, i) in pieces"
+          :key="i"
+          :config="{
+            x: item.x,
+            y: item.y + item.h - 8,
+            text: `${item.originalWidth}x${item.originalHeight}`,
+            fontSize: 8,
+            fontFamily: 'Roboto',
+            fill: '#222222'
+          }"
+        />
+
+        <v-transformer :config="{}" ref="tr1Ref" />
       </v-layer>
     </v-stage>
   </div>

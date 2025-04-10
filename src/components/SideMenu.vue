@@ -28,7 +28,7 @@ const alignmentOptions = [
 
 function downloadPdf() {
   layoutToPdf({
-    title: "Тестовый заказ",
+    title: store.projectDetails.title,
     materialName: "ЛДСП 2800х2070х16 U963 чото там какой-то нежный",
     sheet: {
       width: store.rawSheetSettings.sheetWidth,
@@ -68,11 +68,20 @@ onUpdated(() => {
 
 <template>
   <div
-    class="flex flex-col gap-2 bg-gray-200 px-2 w-80 h-[96vh] overflow-hidden transition-all"
+    class="flex flex-col gap-2 bg-gray-200 px-2 w-80 h-full overflow-hidden transition-all pb-2"
     v-if="selectedTab !== null"
   >
     <div class="h-full overflow-auto">
       <div :class="menuClass" v-if="selectedTab === 0">
+        <div :class="cardClass">
+          <h3 class="pb-2">Детали проекта</h3>
+          Название
+          <IDTextInput v-model="store.projectDetails.title" class="mb-2"/>
+          Заказчик
+          <IDTextInput v-model="store.projectDetails.client" class="mb-2"/>
+          Менеджер
+          <IDTextInput v-model="store.projectDetails.manager" class="mb-2"/>
+        </div>
         <div :class="cardClass">
           <h3 class="pb-2">Метод раскроя</h3>
           Выровнять детали по
@@ -93,6 +102,13 @@ onUpdated(() => {
           <IDTextInput v-model="store.rawSheetSettings.padding" class="mb-2" />
           Ширина реза, мм
           <IDTextInput v-model="store.rawSheetSettings.sawDiskWidth" class="mb-2" />
+        </div>
+        <div :class="cardClass">
+          <h3 class="pb-2">Кромки</h3>
+          Толщина 1, мм
+          <IDTextInput v-model="store.edgeSettings.edgeThinWidth" class="mb-2"/>
+          Толщина 2, мм
+          <IDTextInput v-model="store.edgeSettings.edgeThickWidth" class="mb-2" />
         </div>
       </div>
       <div :class="menuClass" v-if="selectedTab === 1">

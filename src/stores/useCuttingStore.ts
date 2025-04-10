@@ -60,6 +60,11 @@ export const useCuttingStore = defineStore('cutting', {
     rawLists: [{}] as TRawList[],
     totalSheetsCount: 0,
     cuttingLength: 0,
+    projectDetails: {
+      title: '',
+      client: '',
+      manager: ''
+    },
     slotSettings: {
       offset: 15,
       depth: 8,

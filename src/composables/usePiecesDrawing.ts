@@ -27,7 +27,9 @@ export const usePiecesDrawing = () => {
       x: piece.x * canvasWidth.value / piece.rawListWidth,
       y: piece.y * (canvasWidth.value / aspectRatio.value) / piece.rawListHeight + offsetY,
       w: piece.w * canvasWidth.value / piece.rawListWidth,
-      h: piece.h * (canvasWidth.value / aspectRatio.value) / piece.rawListHeight
+      h: piece.h * (canvasWidth.value / aspectRatio.value) / piece.rawListHeight,
+      originalWidth: piece.w,
+      originalHeight: piece.h
     }
 
     // if (piece.w >= 200 && piece.h >= 60) {
