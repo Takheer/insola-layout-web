@@ -11,7 +11,7 @@ export type TPiecesLayout = {
   rawListNumber: number
   rawListWidth: number
   rawListHeight: number
-  materialId?: number
+  materialName?: string
 }
 
 export type TCuttingStats = {
@@ -26,24 +26,29 @@ export const useAlignPieces = () => {
     const stats = {
       cuttingLength : 0
     } as TCuttingStats;
+
     const rawList = {
       h: store.rawSheetSettings.sheetHeight - 2 * store.rawSheetSettings.padding,
       w: store.rawSheetSettings.sheetWidth - 2 * store.rawSheetSettings.padding,
       x: 0,
       y: 0,
       rawListHeight: store.rawSheetSettings.sheetHeight - 2 * store.rawSheetSettings.padding,
-      rawListWidth: store.rawSheetSettings.sheetWidth - 2 * store.rawSheetSettings.padding
+      rawListWidth: store.rawSheetSettings.sheetWidth - 2 * store.rawSheetSettings.padding,
+      materialName: pieces[0].materialName
     } as TPiecesLayout;
+
     const lists = [{...rawList, rawListNumber: 0}] as TPiecesLayout[]
     let rawListsCount = 0;
     pieces = pieces.map(p => [...Array(p.count).fill({...p, width: +p.width, height: +p.height })]).flat()
     pieces.sort((p1, p2) => p1.width * p1.height < p2.width * p2.height ? 1 : -1);
 
     for (let piece of pieces) {
-      let placement = placePiece(piece, lists, isVertical);
-      if (!placement) {
+      let placement;
+      try {
+        placement = placePiece(piece, lists, isVertical);
+      } catch (e) {
         rawListsCount++
-        lists.push({ ...rawList, rawListNumber: rawListsCount })
+        lists.push({ ...rawList, materialName: piece.materialName, rawListNumber: rawListsCount })
         placement = placePiece(piece, lists, isVertical)
       }
       stats.cuttingLength += piece.width + piece.height
@@ -54,8 +59,8 @@ export const useAlignPieces = () => {
   }
 
   function placePiece(piece: TCuttingPiece, lists: TPiecesLayout[], isVertical: boolean) {
-    let list = lists.find(l => pieceFitsListExactly(piece, l));
     let listIndex = lists.findIndex(l => pieceFitsListExactly(piece, l))
+    let list = lists[listIndex];
 
     if (!list) {
       for (let i = 0; i < lists.length; i++) {
@@ -67,7 +72,7 @@ export const useAlignPieces = () => {
     }
 
     if (!list) {
-      return null;
+      throw new Error('Деталь невозможно разместить!', piece);
     }
 
     const pieceLayout = (piece.width <= list.w && piece.height <= list.h
@@ -76,7 +81,7 @@ export const useAlignPieces = () => {
     pieceLayout.rawListNumber = list.rawListNumber
     pieceLayout.rawListHeight = list.rawListHeight
     pieceLayout.rawListWidth = list.rawListWidth
-    pieceLayout.materialId = list.materialId
+    pieceLayout.materialName = list.materialName
 
     // console.log(`placing piece ${piece.width} ${piece.height} (${pieceLayout.x}, ${pieceLayout.y}) to list ${list.rawListNumber}`)
 
@@ -89,7 +94,7 @@ export const useAlignPieces = () => {
   }
 
   function pieceFitsList(piece: TCuttingPiece, list: TPiecesLayout) {
-    if (piece.materialId !== undefined && piece.materialId !== list.materialId) {
+    if (piece.materialName !== undefined && piece.materialName !== list.materialName) {
       return false;
     }
 
@@ -98,7 +103,7 @@ export const useAlignPieces = () => {
   }
 
   function pieceFitsListExactly(piece: TCuttingPiece, list: TPiecesLayout) {
-    if (piece.materialId !== undefined && piece.materialId !== list.materialId || !pieceFitsList(piece,list)) {
+    if (piece.materialName !== undefined && piece.materialName !== list.materialName || !pieceFitsList(piece,list)) {
       return false;
     }
 

@@ -124,5 +124,18 @@ async function updateProject(uuid: string, store: ReturnType<typeof useCuttingSt
     }
   }
 
-  return { createNewProject, getUserProjects, updateProject, getProjectByUuid }
+  async function userOwnsProject(uuid: string) {
+    const res = await fetch(apiUrl + `/user/owns-project/${uuid}`, {
+      headers: {
+        'Authorization': `Bearer ${getCookie('token')}`
+      }
+    })
+
+    return {
+      status: res.status,
+      owns: res.status === 401 ? false : (await res.json())
+    }
+  }
+
+  return { createNewProject, getUserProjects, updateProject, getProjectByUuid, userOwnsProject }
 }

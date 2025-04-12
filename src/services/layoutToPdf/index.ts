@@ -32,7 +32,7 @@ export const useLayoutToPdf = () => {
     drawParagraph(`Материал: ${order.materialName}`, 10, 20)
     doc.line(10, 21, 200, 21)
 
-    drawParagraph(`Заказчик: ${order.sheet.thickness}`, 10, 28)
+    drawParagraph(`Заказчик: ${order.client ?? ''}`, 10, 28)
     drawParagraph(`Дата готовности:`, 100, 28)
     doc.line(10, 29, 200, 29);
 

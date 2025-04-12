@@ -25,6 +25,7 @@ const isMobile = breakpoints.smaller('lg')
 type TProps = {
   piece: TCuttingPiece,
   pieceIndex: number
+  disabled?: boolean
 };
 const props = defineProps<TProps>();
 type TEmits = {
@@ -50,7 +51,19 @@ function openMaterialAddModal() {
 }
 
 function setMaterial(value: any) {
-  store.pieces[props.pieceIndex].materialId = value
+  store.pieces[props.pieceIndex].materialName = value
+}
+
+function copy() {
+  if (!props.disabled) {
+    emits('copy')
+  }
+}
+
+function deletePiece() {
+  if (!props.disabled) {
+    emits('delete')
+  }
 }
 </script>
 
@@ -61,12 +74,14 @@ function setMaterial(value: any) {
         v-model="piece.name"
         placeholder="Название (необязательно)"
         dense
+        :disabled="disabled"
       />
       <IDAutocomplete
         placeholder="Материал"
-        :model-value="store.pieces[pieceIndex].materialId?.toString()"
+        :model-value="store.pieces[pieceIndex].materialName"
         :options="[...materialOptions, {label: 'Добавить', value: 'add', onClick: openMaterialAddModal}]"
         :filterable="false"
+        :disabled="disabled"
         dense
         inline
         @update:modelValue="setMaterial"
@@ -80,23 +95,27 @@ function setMaterial(value: any) {
             v-maska="'####'"
             dense
             placeholder="Длина"
+            :disabled="disabled"
           />
           <div class="flex flex-row gap-2">
             <EdgeSelector
               v-model="piece.edges.width[0]"
               class="w-[50%]"
+              :disabled="disabled"
             />
             <EdgeSelector
               v-model="piece.edges.width[1]"
               class="w-[50%]"
+              :disabled="disabled"
             />
           </div>
         </div>
         <div
-          @mouseenter="xHovered = true"
+          @mouseenter="disabled ? xHovered = true : () => {}"
           @mouseleave="xHovered = false"
-          class="cursor-pointer py-2 hover:text-orange-600 transition-all"
-          @click="emits('swapDimensions')"
+          class="py-2 transition-all"
+          :class="{'cursor-pointer hover:text-orange-600': !disabled}"
+          @click="disabled ? () => {} : emits('swapDimensions')"
         >
           <PhArrowsLeftRight v-if="xHovered" />
           <PhX v-else />
@@ -108,15 +127,18 @@ function setMaterial(value: any) {
             v-maska="'####'"
             dense
             placeholder="Ширина"
+            :disabled="disabled"
           />
           <div class="flex flex-row gap-2">
             <EdgeSelector
               v-model="piece.edges.height[0]"
               class="w-[50%]"
+              :disabled="disabled"
             />
             <EdgeSelector
               v-model="piece.edges.height[1]"
               class="w-[50%]"
+              :disabled="disabled"
             />
           </div>
         </div>
@@ -128,6 +150,7 @@ function setMaterial(value: any) {
         placeholder="Количество"
         dense
         class="max-w-32"
+        :disabled="disabled"
       />
     </div>
     <div class="flex flex-row gap-2 mt-2 items-center">
@@ -154,18 +177,21 @@ function setMaterial(value: any) {
       >
         <PhArrowsClockwise
           size="24"
-          class="cursor-pointer hover:text-cyan-500 transition-all"
-          :class="{'text-cyan-600': piece.rotatable}"
-          @click="piece.rotatable = !piece.rotatable"
+          class="transition-all"
+          :class="{
+            'text-cyan-600': piece.rotatable,
+            'cursor-pointer hover:text-cyan-500': !disabled
+          }"
+          @click="disabled ? () => {} : piece.rotatable = !piece.rotatable"
         />
       </IDPopup>
       <PhCopy
-        @click="() => emits('copy')"
+        @click="copy"
         class="cursor-pointer hover:text-orange-600 transition-all ml-auto"
         size="24"
       />
       <PhTrash
-        @click="() => emits('delete')"
+        @click="deletePiece"
         class="cursor-pointer hover:text-red-500 transition-all"
         size="24"
       />

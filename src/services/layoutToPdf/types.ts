@@ -3,6 +3,8 @@ import {ELayoutMethod} from "@/stores/useCuttingStore.ts";
 
 export type TOrderPdfData = {
   title: string
+  client?: string
+  manager?: string
   materialName: string
   sheet: {
     width: number

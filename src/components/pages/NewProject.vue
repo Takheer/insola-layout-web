@@ -15,10 +15,17 @@ const projectsStore = useProjectsStore();
 const api = useApi();
 const route = useRoute();
 
+const isProjectEditable = ref(false)
+
 onMounted(async () => {
   store.loadPieces()
   store.loadSettings()
-  const data = await api.getProjectByUuid(route.params.uuid as string)
+  const [data, userOwnsProjectData] = await Promise.all([
+    api.getProjectByUuid(route.params.uuid as string),
+    api.userOwnsProject(route.params.uuid as string)
+  ])
+
+  isProjectEditable.value = userOwnsProjectData.owns;
 
   if (data.project.pieces) {
     store.pieces = piecesFromDto(data.project.pieces)
@@ -35,7 +42,7 @@ onMounted(async () => {
   }
   if (projectsStore.projectsList.length === 0) {
     const data = await api.getUserProjects();
-    projectsStore.projectsList = data.projects
+    projectsStore.projectsList = data.status === 200 ? data.projects : []
   }
 })
 
@@ -46,13 +53,18 @@ store.$subscribe(() => {
 
 <template>
   <div class="flex flex-col">
-    <TabsMenu :selected-tab="selectedTab" @update="selectedTab=$event" class="order-2 md:order-1" />
+    <TabsMenu
+      :selected-tab="selectedTab"
+      :is-project-editable="isProjectEditable"
+      @update="selectedTab=$event"
+      class="order-2 md:order-1"
+    />
     <div class="flex flex-row overflow-y-hidden order-1 md:order-2">
       <Transition>
         <SideMenu :selected-tab="selectedTab" />
       </Transition>
       <div class="flex flex-col md:flex-row gap-2 p-4 pt-0 w-full">
-        <PiecesList class="overflow-y-auto transition-all grow h-[43vh] md:h-[86vh]" />
+        <PiecesList :disabled="!isProjectEditable" class="overflow-y-auto transition-all grow h-[43vh] md:h-[86vh]" />
         <MainCanvas v-if="store.pieces.length > 0" class="transition-all h-[43vh] md:h-[86vh]" />
       </div>
     </div>

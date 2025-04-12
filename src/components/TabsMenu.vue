@@ -12,9 +12,11 @@ const tabClass = "flex flex-row w-fit gap-2 px-2 py-1 rounded-lg cursor-pointer"
 
 type TProps = {
   selectedTab: number | null
+  isProjectEditable?: boolean
 };
 const props = withDefaults(defineProps<TProps>(), {
-  selectedTab: null
+  selectedTab: null,
+  isProjectEditable: false
 });
 
 type TEmits = {
@@ -82,7 +84,7 @@ function setSelectedTab(i: number) {
       Опубликован!
     </div>
     <IDButton
-      v-else
+      v-else-if="isProjectEditable"
       variant="primary"
       size="sm"
       class="flex flex-row gap-2 ml-2"

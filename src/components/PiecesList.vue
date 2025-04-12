@@ -14,6 +14,13 @@ const isSlotsSelectModalEnabled = ref(false);
 const selectedPieceIndex = ref(-1)
 const selectedPiece = ref<TCuttingPiece>({} as TCuttingPiece)
 
+type TProps = {
+  disabled?: boolean
+};
+withDefaults(defineProps<TProps>(), {
+  disabled: false
+});
+
 function copyPiece(i: number) {
   store.pieces.splice(i, 0, JSON.parse(JSON.stringify(store.pieces[i])))
 }
@@ -70,6 +77,7 @@ onMounted(() => {
     :key="i"
     :piece="piece"
     :piece-index="i"
+    :disabled="disabled"
     @copy="() => copyPiece(i)"
     @delete="() => deletePiece(i)"
     @open-material-add-modal="() => openMaterialAddModal(i)"
