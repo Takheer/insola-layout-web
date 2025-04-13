@@ -59,15 +59,16 @@ const handleDragend = () => {
 const updateProjectDebounced = debounce(api.updateProject, 700)
 
 watch([() => store.pieces, () => store.layoutMethod, () => store.rawSheetSettings, () => store.slotSettings, () => store.projectDetails], () => {
-  if (store.pieces.length) {
-    localStorage.setItem('pieces', JSON.stringify(store.pieces))
-  }
-
   if (projectsStore.isProjectPublished(route.params.uuid as string)) {
     updateProjectDebounced(route.params.uuid as string, store)
     localStorage.removeItem('localProjectUuid')
   }
+}, { deep: true })
 
+watch([() => store.pieces, () => store.layoutMethod, () => store.rawSheetSettings, () => store.slotSettings], () => {
+  if (store.pieces.length) {
+    localStorage.setItem('pieces', JSON.stringify(store.pieces))
+  }
   const {pieces: rawPieces, lists: rawLists, stats} = alignPieces(store.pieces, store.layoutMethod === ELayoutMethod.VERTICAL);
   store.totalSheetsCount = rawPieces.reduce((prev, curr) => curr.rawListNumber > prev ? curr.rawListNumber : prev, 0) + 1
   store.cuttingLength = stats.cuttingLength

@@ -6,7 +6,7 @@ type TUser = {
   email: string,
 }
 
-export const useProjectsStore = defineStore('projects', {
+export const useUserStore = defineStore('users', {
   state: () => ({
     user: {
       fullName: '',

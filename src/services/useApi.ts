@@ -208,5 +208,25 @@ async function updateProject(uuid: string, store: ReturnType<typeof useCuttingSt
     }
   }
 
-  return { createNewProject, getUserProjects, updateProject, getProjectByUuid, userOwnsProject }
+  async function getCurrentUser() {
+    const res = await fetch(apiUrl + `/user/me`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${getCookie('token')}`
+      }
+    });
+
+    const data = await res.json()
+
+    return {
+      status: res.status,
+      user: {
+        fullName: data.full_name,
+        email: data.email,
+        subscriptionPaidUntil: data.subscription_paid_until
+      }
+    }
+  }
+
+  return { createNewProject, getUserProjects, updateProject, getProjectByUuid, userOwnsProject, getCurrentUser }
 }

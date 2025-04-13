@@ -9,10 +9,12 @@ import { createWebHistory, createRouter } from 'vue-router'
 import IndexPage from '@/components/pages/index.vue'
 import LoginPage from '@/components/pages/LoginPage.vue'
 import NewProject from "@/components/pages/NewProject.vue";
+import UserScreen from "@/components/pages/UserScreen.vue";
 
 const routes = [
   { path: '/', component: IndexPage },
   { path: '/login', component: LoginPage },
+  { path: '/user', component: UserScreen },
   { path: '/:uuid', component: NewProject },
 ]
 

@@ -1,15 +1,18 @@
 <script setup lang="ts">
-import {PhUser} from "@phosphor-icons/vue";
+import {PhSignIn, PhUser} from "@phosphor-icons/vue";
 import {useRouter} from "vue-router";
 import {onMounted, ref} from "vue";
 import IDButton from "@/components/ui/IDButton.vue";
+import {useUserStore} from "@/stores/useUserStore.ts";
 
 const cardClass = "flex flex-row gap-2 items-center hover:text-orange-600 transition-all cursor-pointer"
 const router = useRouter();
 
 const _install_ready = ref(false);
 const _install_prompt = ref(null);
-const _app_installed = ref(false)
+const _app_installed = ref(false);
+
+const userStore = useUserStore();
 
 onMounted(() => {
   window.addEventListener("beforeinstallprompt", savePrompt)
@@ -42,14 +45,24 @@ function handleAppInstalled(){
     <IDButton @click="installPWA()" size="sm">Install</IDButton>
   </div>
   <p v-show="_app_installed">
-    Прогрессивное веб-приложение установлено
+    Приложение установлено
   </p>
   <div
+    v-if="userStore.getCurrentUser"
+    :class="cardClass"
+    class="ml-auto"
+    @click="router.push('/user')"
+  >
+    <PhUser size="20" />
+    Аккаунт
+  </div>
+  <div
+    v-else
     :class="cardClass"
     class="ml-auto"
     @click="router.push('/login')"
   >
-    <PhUser size="20" />
+    <PhSignIn size="20" />
     Войти
   </div>
 </div>
