@@ -6,6 +6,7 @@ import type {TPiecesLayout} from "@/services/alignPieces";
 import {ELayoutMethod, type TCuttingPiece} from "@/stores/useCuttingStore.ts";
 import {useAlignPieces} from "@/services/alignPieces";
 import {getEdgeCode} from "@/services/useApi.ts";
+import {useDrawPiecesOnSheet} from "@/services/drawPiecesOnSheet";
 
 export const useLayoutToPdf = () => {
   const {alignPieces} = useAlignPieces();
@@ -16,6 +17,7 @@ export const useLayoutToPdf = () => {
   });
 
   async function layoutToPdf(order: TOrderPdfData) {
+
     doc = new JSPDF({
       orientation: "portrait",
       unit: "mm",
@@ -112,8 +114,11 @@ export const useLayoutToPdf = () => {
   }
 
   async function sheetToPdf(order: TOrderPdfData, pieces: TPiecesLayout[], sheets: TPiecesLayout[]) {
+    const {getSheetDrawings, getPieceDrawings} = useDrawPiecesOnSheet(order.sheet.height);
+
     const divElement = document.createElement('div')
-    divElement.setAttribute('id', 'container')
+    divElement.setAttribute('id', 'container');
+    divElement.style.display = 'none';
     document.body.appendChild(divElement)
     const stage = new Konva.Stage({
       container: 'container',
@@ -123,25 +128,11 @@ export const useLayoutToPdf = () => {
     const layer = new Konva.Layer();
 
     for (let piece of pieces) {
-      layer.add(new Konva.Rect({
-        x: piece.x,
-        y: piece.y,
-        width: piece.w,
-        height: piece.h,
-        fill: '#89b717',
-        opacity: 0.8,
-      }))
+      layer.add(...getPieceDrawings(piece))
     }
 
     for (let sheet of sheets) {
-      layer.add(new Konva.Rect({
-        x: sheet.x,
-        y: sheet.y,
-        width: sheet.w,
-        height: sheet.h,
-        fill: '#6db8c9',
-        opacity: 0.6
-      }))
+      layer.add(...getSheetDrawings(sheet))
     }
 
     stage.add(layer)
@@ -170,6 +161,7 @@ export const useLayoutToPdf = () => {
     drawParagraph("Кол-во", 65 + 2, 18 + 6)
     drawParagraph("Поворот", 85 + 1.5, 18 + 6)
     drawParagraph("Название", 105+2, 18 + 6)
+
     for (let i = 0; i <  pieces.length; i++) {
       const y = 26 + i*8
       const edgesHeight = getEdgeCode(pieces[i].edges.height)

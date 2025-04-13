@@ -114,7 +114,7 @@ export const useCuttingStore = defineStore('cutting', {
       this.pieces = JSON.parse(localStorage.getItem('pieces') ?? '[]')
     },
     loadSettings() {
-      this.layoutMethod = JSON.parse(localStorage.getItem('layoutMethod') ?? '1')
+      this.layoutMethod = Number(localStorage.getItem('layoutMethod') ?? '1')
       this.rawSheetSettings = JSON.parse(localStorage.getItem('rawSheetSettings') ?? JSON.stringify(this.rawSheetSettings))
     },
     saveSettings() {

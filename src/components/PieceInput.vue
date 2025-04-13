@@ -50,7 +50,7 @@ function openMaterialAddModal() {
   emits('openMaterialAddModal')
 }
 
-function setMaterial(value: any) {
+function setMaterial(value: string) {
   store.pieces[props.pieceIndex].materialName = value
 }
 

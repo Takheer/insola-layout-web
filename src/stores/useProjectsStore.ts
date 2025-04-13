@@ -1,8 +1,22 @@
 import {defineStore} from "pinia";
-import {type TCuttingPiece} from "@/stores/useCuttingStore.ts";
+import {ELayoutMethod, type TCuttingPiece, type TRawSheetSettings, type TSlotSettings} from "@/stores/useCuttingStore.ts";
+
+type TProjectDetails = {
+  name?: string
+  client?: string,
+  manager?: string
+}
 
 export type TCuttingProject = {
-  uuid: string
+  uuid?: string
+  projectDetails: TProjectDetails
+  slotSettings: TSlotSettings
+  edgeSettings: {
+    edgeThickWidth: number,
+    edgeThinWidth: number
+  },
+  rawSheetSettings: TRawSheetSettings,
+  layoutMethod: ELayoutMethod,
   pieces: TCuttingPiece[]
 }
 

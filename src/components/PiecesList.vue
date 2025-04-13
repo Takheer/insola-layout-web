@@ -88,6 +88,7 @@ onMounted(() => {
     @click="store.addNewPiece"
     class="w-full flex flex-row items-center gap-2 justify-center"
     variant="outline"
+    v-if="!disabled"
   >
     <PhPlus size="32" />
     Добавить деталь

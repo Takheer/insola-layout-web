@@ -58,7 +58,7 @@ const handleDragend = () => {
 
 const updateProjectDebounced = debounce(api.updateProject, 700)
 
-watch([() => store.pieces, () => store.layoutMethod, () => store.rawSheetSettings, () => store.slotSettings], () => {
+watch([() => store.pieces, () => store.layoutMethod, () => store.rawSheetSettings, () => store.slotSettings, () => store.projectDetails], () => {
   if (store.pieces.length) {
     localStorage.setItem('pieces', JSON.stringify(store.pieces))
   }

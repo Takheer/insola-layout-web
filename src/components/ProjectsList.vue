@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AddPiecesScreen from "@/components/AddPiecesScreen.vue";
-import {computed, onMounted, ref} from "vue";
+import {onMounted, ref} from "vue";
 import IDBaseLink from "@/components/ui/IDBaseLink.vue";
 import {useApi} from "@/services/useApi.ts";
 import {pluralize} from "../utils/pluralize.ts";
@@ -37,7 +37,7 @@ onMounted(async () => {
       @click="router.push(`/${project.uuid}`)"
     >
       <div class="w-60 text-ellipsis whitespace-nowrap overflow-hidden">
-        {{ project.uuid }}
+        {{ project.projectDetails.title ?? project.uuid }}
       </div>
       <div>
         {{ project.pieces?.length }} {{ pluralize(project.pieces?.length, "деталь", "детали", "деталей")}}

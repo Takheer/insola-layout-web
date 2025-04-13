@@ -8,6 +8,11 @@ import {useCuttingStore} from "@/stores/useCuttingStore.ts";
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const isMobile = breakpoints.smaller('lg')
 
+type TProps = {
+  disabled?: boolean
+};
+const props = defineProps<TProps>();
+
 const model = defineModel()
 const store = useCuttingStore()
 
@@ -16,6 +21,9 @@ const hovered = ref(false)
 
 
 function update() {
+  if (props.disabled) {
+    return;
+  }
   switch (model.value) {
     case edgeValues.THIN:
       model.value = edgeValues.THICK;

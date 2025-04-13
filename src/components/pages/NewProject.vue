@@ -6,7 +6,7 @@ import MainCanvas from "@/components/MainCanvas.vue";
 import {onMounted, ref} from "vue";
 import {useCuttingStore} from "@/stores/useCuttingStore.ts";
 import {useProjectsStore} from "@/stores/useProjectsStore.ts";
-import {piecesFromDto, useApi} from "@/services/useApi.ts";
+import {useApi} from "@/services/useApi.ts";
 import {useRoute} from "vue-router";
 
 const selectedTab = ref(null);
@@ -25,10 +25,15 @@ onMounted(async () => {
     api.userOwnsProject(route.params.uuid as string)
   ])
 
-  isProjectEditable.value = userOwnsProjectData.owns;
+  console.log({data})
 
-  if (data.project.pieces) {
-    store.pieces = piecesFromDto(data.project.pieces)
+  isProjectEditable.value = userOwnsProjectData.owns || data.status === 404;
+
+  if (data.status === 200) {
+    store.pieces = data.project.pieces
+    store.edgeSettings = data.project.edgeSettings;
+    store.projectDetails = data.project.projectDetails;
+    store.layoutMethod = data.project.layoutMethod;
   } else if (localStorage.getItem('pieces')) {
     store.pieces = await JSON.parse(localStorage.getItem('pieces') ?? '[]');
     for (let i = 0; i < store.pieces.length; i++) {
