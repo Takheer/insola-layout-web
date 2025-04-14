@@ -83,7 +83,6 @@ export const useCuttingStore = defineStore('cutting', {
     } as TRawSheetSettings
   }),
   getters: {
-    rawSizes: (state) => state.pieces.map(p => [...Array(p.count).fill({ w: p.width, l: p.height, rot: p.rotatable})]),
     getMaterialById: (state) => (id: number|undefined) => {
       return (id || (id === 0)) ? state.materials?.[id] : null
     },

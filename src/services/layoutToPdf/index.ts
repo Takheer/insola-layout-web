@@ -1,4 +1,5 @@
 import {jsPDF as JSPDF} from "jspdf";
+// @ts-ignore
 import { font } from '@/assets/fonts/Roboto.js'
 import type {TOrderPdfData} from "@/services/layoutToPdf/types.ts";
 import Konva from "konva";
@@ -75,7 +76,7 @@ export const useLayoutToPdf = () => {
     drawTableUnit(105, 106, `Тип 2 — ${order.edges.edgeThinWidth} мм`, '')
     drawHorizontalLine(164, 110, 32, 1, true, 3)
 
-    const {pieces, lists: sheets, stats} = alignPieces(order.pieces, order.layoutMethod === ELayoutMethod.VERTICAL);
+    const {pieces, lists: sheets} = alignPieces(order.pieces, order.layoutMethod === ELayoutMethod.VERTICAL);
 
     const piecesByRawList: Record<string, TPiecesLayout[]> = {}
     const sheetsByRawList: Record<string, TPiecesLayout[]> = {}
@@ -226,9 +227,9 @@ export const useLayoutToPdf = () => {
         canvas.height = img.width
         canvas.style.position = "absolute"
         const ctx = canvas.getContext("2d")
-        ctx.translate(img.height, img.width / img.height)
-        ctx.rotate(Math.PI / 2)
-        ctx.drawImage(img, 0, 0)
+        ctx!.translate(img.height, img.width / img.height)
+        ctx!.rotate(Math.PI / 2)
+        ctx!.drawImage(img, 0, 0)
         resolve(canvas.toDataURL())
       }
     })

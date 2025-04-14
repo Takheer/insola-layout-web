@@ -38,15 +38,19 @@ export const piecesFromDto = (pieces: TPieceDto[]) => {
   let localPieces = [];
   for (let i = 0; i < pieces.length; i++) {
     const p = pieces[i];
-    p.edges = {
+    const edges = {
       width: [...edgeCodesToEdges[p.edges_width_code as keyof typeof edgeCodesToEdges]],
       height: [...edgeCodesToEdges[p.edges_height_code as keyof typeof edgeCodesToEdges]]
     };
-    p.slots = {
+    const slots = {
       width: [...slotCodesToSlots[(p.slots_width_code ?? 0) as keyof typeof slotCodesToSlots]],
       height: [...slotCodesToSlots[(p.slots_height_code ?? 0) as keyof typeof slotCodesToSlots]]
     };
-    localPieces.push(p)
+    localPieces.push({
+      ...p,
+      edges,
+      slots
+    })
   }
 
   return localPieces
@@ -76,7 +80,7 @@ const projectFlatFromDto = (project: TProjectDto) => {
       padding: project.raw_sheet_thickness,
       sawDiskWidth: project.raw_sheet_saw_disk_width
     },
-    layoutMethod: project.layoutMethod === '0' ? ELayoutMethod.HORIZONTAL : ELayoutMethod.VERTICAL,
+    layoutMethod: project.layout_method === '0' ? ELayoutMethod.HORIZONTAL : ELayoutMethod.VERTICAL,
   }
 }
 
@@ -180,7 +184,7 @@ async function updateProject(uuid: string, store: ReturnType<typeof useCuttingSt
 
     return {
       status: res.status,
-      projects: (await res.json()).map(p => projectFlatFromDto(p))
+      projects: (await res.json()).map((p: TProjectDto) => projectFlatFromDto(p))
     }
   }
 

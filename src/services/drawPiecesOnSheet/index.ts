@@ -4,7 +4,7 @@ import Konva from "konva";
 export const useDrawPiecesOnSheet = (sheetHeight: number) => {
   function getPieceDrawings(piece: TPiecesLayout): Konva.Shape[] {
     const textSize = 16 * 0.002 * sheetHeight
-    const textRotated = piece.h > piece.w && piece.originalWidth < 200
+    const textRotated = piece.h > piece.w && (piece.originalWidth ?? 0) < 200
     return [
       new Konva.Rect({
         x: piece.x,

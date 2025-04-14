@@ -39,8 +39,9 @@ export const useAlignPieces = () => {
 
     const lists = [{...rawList, rawListNumber: 0}] as TPiecesLayout[]
     let rawListsCount = 0;
+    // @ts-ignore
     pieces = pieces.map(p => [...Array(p.count).fill({...p, width: +p.width, height: +p.height })]).flat()
-    pieces.sort((p1, p2) => p1.width * p1.height < p2.width * p2.height ? 1 : -1);
+    pieces.sort((p1, p2) => p1.width! * p1.height! < p2.width! * p2.height! ? 1 : -1);
 
     for (let piece of pieces) {
       let placement;
@@ -51,7 +52,7 @@ export const useAlignPieces = () => {
         lists.push({ ...rawList, materialName: piece.materialName, rawListNumber: rawListsCount })
         placement = placePiece(piece, lists, isVertical)
       }
-      stats.cuttingLength += piece.width + piece.height
+      stats.cuttingLength += (piece.width ?? 0) + (piece.height ?? 0)
       result.push(placement!);
     }
 
@@ -59,6 +60,8 @@ export const useAlignPieces = () => {
   }
 
   function placePiece(piece: TCuttingPiece, lists: TPiecesLayout[], isVertical: boolean) {
+    if (!piece.width || !piece.height) return;
+
     let listIndex = lists.findIndex(l => pieceFitsListExactly(piece, l))
     let list = lists[listIndex];
 
@@ -72,7 +75,7 @@ export const useAlignPieces = () => {
     }
 
     if (!list) {
-      throw new Error('Деталь невозможно разместить!', piece);
+      throw new Error('Деталь невозможно разместить!');
     }
 
     const pieceLayout = (piece.width <= list.w && piece.height <= list.h
@@ -94,6 +97,7 @@ export const useAlignPieces = () => {
   }
 
   function pieceFitsList(piece: TCuttingPiece, list: TPiecesLayout) {
+    if (!piece.width || !piece.height) return;
     if (piece.materialName !== undefined && piece.materialName !== list.materialName) {
       return false;
     }
@@ -184,6 +188,7 @@ export const useAlignPieces = () => {
   }
 
   function getLayoutSizeWithoutEdges (piece: TCuttingPiece) {
+    if (!piece.width || !piece.height) return;
     if (piece.sizeWithEdges) {
       return {
         w: piece.width - piece.edges.width.reduce((prev, curr) => prev+curr, 0),
