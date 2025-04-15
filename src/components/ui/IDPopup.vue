@@ -14,7 +14,9 @@ const popupShowed = ref(false)
 
 const placementClass = {
   'right': 'left-20 top-2',
-  'bottom': 'top-8'
+  'bottom': 'top-8',
+  'top': '',
+  'left': ''
 }
 </script>
 

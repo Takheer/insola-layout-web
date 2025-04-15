@@ -28,7 +28,7 @@ const alignmentOptions = [
 
 function downloadPdf() {
   layoutToPdf({
-    title: store.projectDetails.title,
+    title: store.projectDetails.title ?? '',
     manager: store.projectDetails.manager,
     client: store.projectDetails.client,
     materialName: "ЛДСП 2800х2070х16 U963 чото там какой-то нежный",

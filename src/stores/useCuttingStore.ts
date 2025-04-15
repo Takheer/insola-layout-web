@@ -7,7 +7,7 @@ export type TCuttingPiece = {
   height: number | null
   count: number | null
   rotatable: boolean
-  sizeWithEdges: boolean
+  sizeWithEdges?: boolean
   edges: {
     width: number[]
     height: number[]

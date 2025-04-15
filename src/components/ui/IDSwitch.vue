@@ -23,7 +23,7 @@ watch(() => props.options, (newVal) => {
 
 function setSelected(id: any) {
   localOptions.value.forEach(o => o.selected = false);
-  localOptions.value.find(o => o.id === id).selected = true;
+  localOptions.value.find(o => o.id === id)!.selected = true;
   emits('select', id)
 }
 </script>

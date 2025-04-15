@@ -26,6 +26,7 @@ function savePrompt(event: any) {
 }
 
 function installPWA(){
+  // @ts-ignore
   _install_prompt.value?.prompt()
 }
 

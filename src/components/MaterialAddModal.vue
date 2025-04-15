@@ -7,7 +7,7 @@ import useVuelidate from "@vuelidate/core";
 import { required, numeric } from "@/utils/validators";
 import {ref} from "vue";
 
-const model = defineModel()
+const model = defineModel<boolean>()
 
 const rules = {
   title: { required }

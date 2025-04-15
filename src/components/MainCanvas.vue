@@ -42,20 +42,6 @@ const pieces = ref([] as TPiecesLayout[]);
 const lists = ref([] as TPiecesLayout[]);
 const dragItemId = ref(null);
 
-const handleDragstart = (e) => {
-  // save drag element:
-  dragItemId.value = e.target.id();
-  // move current element to the top:
-  const item = lists.value.find(i => i.id === dragItemId.value);
-  const index = lists.value.indexOf(item);
-  lists.value.splice(index, 1);
-  lists.value.push(item);
-};
-
-const handleDragend = () => {
-  dragItemId.value = null;
-};
-
 const updateProjectDebounced = debounce(api.updateProject, 700)
 
 watch([() => store.pieces, () => store.layoutMethod, () => store.rawSheetSettings, () => store.slotSettings, () => store.projectDetails], () => {
@@ -87,8 +73,6 @@ watch([() => store.pieces, () => store.layoutMethod, () => store.rawSheetSetting
     <v-stage
       ref="stage"
       :config="stageSize"
-      @dragstart="handleDragstart"
-      @dragend="handleDragend"
     >
       <v-layer ref="layer">
         <v-rect
