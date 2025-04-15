@@ -1,4 +1,5 @@
 import {defineStore} from "pinia";
+import type {TProjectDetails} from "@/stores/useProjectsStore.ts";
 
 export type TCuttingPiece = {
   name: string | null
@@ -64,7 +65,7 @@ export const useCuttingStore = defineStore('cutting', {
       title: '',
       client: '',
       manager: ''
-    },
+    } as TProjectDetails,
     slotSettings: {
       offset: 15,
       depth: 8,

@@ -17,14 +17,14 @@ type TEmits = {
 const emits = defineEmits<TEmits>();
 
 type TProps = {
-  selectedPiece?: TCuttingPiece
+  selectedPiece: TCuttingPiece
 };
 const props = defineProps<TProps>();
 
 const store = useCuttingStore();
 
 const pieceCanvas = ref<HTMLCanvasElement | null>(null);
-const ctx = ref(null);
+const ctx = ref<CanvasRenderingContext2D | null>();
 
 const localSlots = ref({
   width: [0, 0],
@@ -34,8 +34,8 @@ const localSlots = ref({
 
 const baseWidth = computed(() => isMobile.value ? 180 : 460)
 
-const canvasHeight = computed(() => +props.selectedPiece.height > +props.selectedPiece.width ? baseWidth.value : +props.selectedPiece.height / +props.selectedPiece.width * baseWidth.value)
-const canvasWidth = computed(() => +props.selectedPiece.width >= +props.selectedPiece.height ? baseWidth.value : +props.selectedPiece.width / +props.selectedPiece.height * baseWidth.value)
+const canvasHeight = computed(() => +props.selectedPiece.height! > +props.selectedPiece.width! ? baseWidth.value : +props.selectedPiece.height! / +props.selectedPiece.width! * baseWidth.value)
+const canvasWidth = computed(() => +props.selectedPiece.width! >= +props.selectedPiece.height! ? baseWidth.value : +props.selectedPiece.width! / +props.selectedPiece.height! * baseWidth.value)
 
 onUpdated(async () => {
   ctx.value = pieceCanvas.value?.getContext("2d");
