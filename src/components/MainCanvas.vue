@@ -56,7 +56,7 @@ watch([() => store.pieces, () => store.layoutMethod, () => store.rawSheetSetting
     localStorage.setItem('pieces', JSON.stringify(store.pieces))
   }
   const {pieces: rawPieces, lists: rawLists, stats} = alignPieces(store.pieces, store.layoutMethod === ELayoutMethod.VERTICAL);
-  store.totalSheetsCount = rawPieces.reduce((prev, curr) => curr.rawListNumber > prev ? curr.rawListNumber : prev, 0) + 1
+  store.totalSheetsCount = rawPieces.reduce((prev, curr) => curr?.rawListNumber > prev ? curr.rawListNumber : prev, 0) + 1
   store.cuttingLength = stats.cuttingLength
 
   const {pieces: drawablePieces, sheets: drawableSheets} = getDrawablePiecesAndSheets(rawPieces, rawLists)
