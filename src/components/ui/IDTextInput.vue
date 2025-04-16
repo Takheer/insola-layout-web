@@ -3,11 +3,6 @@ import {ref} from "vue";
 
 const model = defineModel()
 
-function update(e: Event) {
-  const target = e.target as HTMLTextAreaElement
-  model.value = isNaN(Number(target.value)) ? target.value : Number(target.value)
-}
-
 const input = ref<HTMLInputElement | null>(null);
 type TEmits = {
   (e: 'focus'): void
@@ -24,9 +19,16 @@ type TProps = {
   placeholder?: string
   dense?: boolean
   disabled?: boolean
+  asNumber?: boolean
 };
 const props = defineProps<TProps>();
 const id = props.label || props.placeholder
+
+function update(e: Event) {
+  const target = e.target as HTMLTextAreaElement
+  model.value = (props.asNumber && !isNaN(Number(target.value))) ? Number(target.value) : target.value
+  // model.value = target.value
+}
 </script>
 
 <template>

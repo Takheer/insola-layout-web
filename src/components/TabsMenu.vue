@@ -7,6 +7,7 @@ import IDButton from "@/components/ui/IDButton.vue";
 import {useApi} from "@/services/useApi.ts";
 import {useCuttingStore} from "@/stores/useCuttingStore.ts";
 import {useProjectsStore} from "@/stores/useProjectsStore.ts";
+import {ref} from "vue";
 
 const tabClass = "flex flex-row w-fit gap-2 px-2 py-1 rounded-lg cursor-pointer";
 
@@ -30,18 +31,20 @@ const api = useApi();
 const router = useRouter();
 const route = useRoute();
 
+const isProjectPublishing = ref(false)
+
 async function publish() {
-  const data = await api.createNewProject(
-    JSON.parse(localStorage.getItem('localProjectUuid')!),
-    store
-  )
+  isProjectPublishing.value = true;
+  const data = await api.createNewProject(route.params.uuid as string, store)
 
   if (data.status === 401) {
+    isProjectPublishing.value = false;
     await router.push(`/login?redirect_uri=${route.fullPath}`)
   }
-  if (data) {
+  if (data.project.pieces) {
     projectsStore.projectsList.push(data.project)
     localStorage.removeItem('localProjectUuid')
+    isProjectPublishing.value = false;
   }
 }
 

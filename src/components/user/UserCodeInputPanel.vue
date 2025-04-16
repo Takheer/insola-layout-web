@@ -49,7 +49,6 @@ function sendCode() {
 onMounted(() => sendCode())
 
 watch(code, async (newVal: string) => {
-  console.log('code', newVal)
   if (newVal.toString().length !== 4) {
     return
   }

@@ -25,14 +25,6 @@ const api = useApi();
 const { alignPieces } = useAlignPieces()
 const { canvasHeight, canvasWidth, getDrawablePiecesAndSheets } = usePiecesDrawing();
 
-onMounted(async () => {
-  const {pieces: rawPieces, lists: rawLists} = alignPieces(store.pieces, store.layoutMethod === ELayoutMethod.VERTICAL);
-  const {pieces: drawablePieces, sheets: drawableSheets} = getDrawablePiecesAndSheets(rawPieces, rawLists)
-  lists.value = drawableSheets;
-  pieces.value = drawablePieces
-
-})
-
 const stageSize = ref({
   width: canvasWidth,
   height: canvasHeight
@@ -40,7 +32,7 @@ const stageSize = ref({
 
 const pieces = ref([] as TPiecesLayout[]);
 const lists = ref([] as TPiecesLayout[]);
-const dragItemId = ref(null);
+const isAlignmentError = ref(false);
 
 const updateProjectDebounced = debounce(api.updateProject, 700)
 
@@ -55,13 +47,18 @@ watch([() => store.pieces, () => store.layoutMethod, () => store.rawSheetSetting
   if (store.pieces.length) {
     localStorage.setItem('pieces', JSON.stringify(store.pieces))
   }
-  const {pieces: rawPieces, lists: rawLists, stats} = alignPieces(store.pieces, store.layoutMethod === ELayoutMethod.VERTICAL);
-  store.totalSheetsCount = rawPieces.reduce((prev, curr) => curr?.rawListNumber > prev ? curr.rawListNumber : prev, 0) + 1
-  store.cuttingLength = stats.cuttingLength
+  try {
+    const {pieces: rawPieces, lists: rawLists, stats} = alignPieces(store.pieces, store.layoutMethod === ELayoutMethod.VERTICAL);
+    store.totalSheetsCount = rawPieces.reduce((prev, curr) => curr?.rawListNumber > prev ? curr.rawListNumber : prev, 0) + 1
+    store.cuttingLength = stats.cuttingLength
 
-  const {pieces: drawablePieces, sheets: drawableSheets} = getDrawablePiecesAndSheets(rawPieces, rawLists)
-  lists.value = drawableSheets;
-  pieces.value = drawablePieces
+    const {pieces: drawablePieces, sheets: drawableSheets} = getDrawablePiecesAndSheets(rawPieces, rawLists)
+    lists.value = drawableSheets;
+    pieces.value = drawablePieces
+    isAlignmentError.value = false;
+  } catch (e) {
+    isAlignmentError.value = true;
+  }
 
 }, { deep: true, immediate: true })
 
@@ -70,7 +67,11 @@ watch([() => store.pieces, () => store.layoutMethod, () => store.rawSheetSetting
 
 <template>
   <div class="overflow-y-auto pt-4" :style="{minWidth: `${canvasWidth}px`}">
+    <div v-if="isAlignmentError" class="pl-4">
+      <p class="mb-2">Не получается разместить все детали!</p>Проверьте параметры листа и убедитесь, что все детали поместятся на лист
+    </div>
     <v-stage
+      v-else
       ref="stage"
       :config="stageSize"
     >

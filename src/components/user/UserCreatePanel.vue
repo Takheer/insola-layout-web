@@ -6,7 +6,6 @@ import {useVuelidate} from "@vuelidate/core";
 import { required, email } from "@/utils/validators";
 import {ref} from "vue";
 import {useAuthApi} from "@/services/useAuthApi.ts";
-import IDBaseLink from "@/components/ui/IDBaseLink.vue";
 
 type TEmits = {
   (e: 'setCredential', val: string): void
@@ -21,9 +20,11 @@ const rules = {
   name: { required }
 }
 
+const $externalResults = ref({})
+
 const credential = ref('')
 const name = ref('')
-const v$ = useVuelidate(rules, { credential, name });
+const v$ = useVuelidate(rules, { credential, name }, { $externalResults });
 
 async function sendConfirmationCode() {
   await v$.value.$validate();

@@ -16,12 +16,14 @@ export const useAuthApi = () => {
   }
 
   async function createUser(email: string, name: string) {
-    console.log({email, name})
     const res = await fetch(apiUrl + `/user?email=${email}&name=${name}`, {
       method: 'POST'
     });
 
-    return await res.json()
+    return {
+      status: res.status,
+      data: await res.json()
+    }
   }
 
   async function auth(email: string, otp: string) {

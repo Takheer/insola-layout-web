@@ -16,7 +16,6 @@ const store = useProjectsStore();
 onMounted(async () => {
   const data = await api.getUserProjects();
   if (data.status === 200) {
-    console.log({data})
     store.projectsList = data.projects
   }
   if (localStorage.getItem('localProjectUuid')) {
@@ -37,7 +36,7 @@ onMounted(async () => {
       @click="router.push(`/${project.uuid}`)"
     >
       <div class="w-60 text-ellipsis whitespace-nowrap overflow-hidden">
-        {{ project.projectDetails.title ?? project.uuid }}
+        {{ project.projectDetails.title || project.uuid }}
       </div>
       <div>
         {{ project.pieces?.length }} {{ pluralize(project.pieces?.length, "деталь", "детали", "деталей")}}

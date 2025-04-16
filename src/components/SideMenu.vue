@@ -95,37 +95,37 @@ onUpdated(() => {
         <div :class="cardClass">
           <h3 class="pb-2">Параметры листа</h3>
           Высота, мм
-          <IDTextInput v-model="store.rawSheetSettings.sheetHeight" class="mb-2"/>
+          <IDTextInput as-number v-model="store.rawSheetSettings.sheetHeight" class="mb-2"/>
           Ширина, мм
-          <IDTextInput v-model="store.rawSheetSettings.sheetWidth" class="mb-2" />
+          <IDTextInput as-number v-model="store.rawSheetSettings.sheetWidth" class="mb-2" />
           Толщина, мм
-          <IDTextInput v-model="store.rawSheetSettings.sheetThickness" class="mb-2" />
+          <IDTextInput as-number v-model="store.rawSheetSettings.sheetThickness" class="mb-2" />
           Отступ от края листа, мм
-          <IDTextInput v-model="store.rawSheetSettings.padding" class="mb-2" />
+          <IDTextInput as-number v-model="store.rawSheetSettings.padding" class="mb-2" />
           Ширина реза, мм
-          <IDTextInput v-model="store.rawSheetSettings.sawDiskWidth" class="mb-2" />
+          <IDTextInput as-number v-model="store.rawSheetSettings.sawDiskWidth" class="mb-2" />
         </div>
         <div :class="cardClass">
           <h3 class="pb-2">Кромки</h3>
           Толщина 1, мм
-          <IDTextInput v-model="store.edgeSettings.edgeThinWidth" class="mb-2"/>
+          <IDTextInput as-number v-model="store.edgeSettings.edgeThinWidth" class="mb-2"/>
           Толщина 2, мм
-          <IDTextInput v-model="store.edgeSettings.edgeThickWidth" class="mb-2" />
+          <IDTextInput as-number v-model="store.edgeSettings.edgeThickWidth" class="mb-2" />
         </div>
       </div>
       <div :class="menuClass" v-if="selectedTab === 1">
         <div :class="cardClass">
           <div class="flex flex-col gap-1">
             Ширина, мм
-            <IDTextInput v-model="store.slotSettings.width" />
+            <IDTextInput as-number v-model="store.slotSettings.width" />
           </div>
           <div class="flex flex-col gap-1">
             Глубина, мм
-            <IDTextInput v-model="store.slotSettings.depth" />
+            <IDTextInput as-number v-model="store.slotSettings.depth" />
           </div>
           <div class="flex flex-col gap-1">
             Отступ от края, мм
-            <IDTextInput v-model="store.slotSettings.offset" />
+            <IDTextInput as-number v-model="store.slotSettings.offset" />
           </div>
         </div>
       </div>
