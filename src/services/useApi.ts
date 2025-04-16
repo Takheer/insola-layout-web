@@ -191,11 +191,12 @@ async function updateProject(uuid: string, store: ReturnType<typeof useCuttingSt
   async function getProjectByUuid(uuid: string) {
     const res = await fetch(apiUrl + `/projects/${uuid}`)
 
+    const data = await res.json()
     return {
       status: res.status,
-      project: {
-        ...projectFromDto(await res.json())
-      }
+      project: data.pieces ? {
+        ...projectFromDto(data)
+      } : {}
     }
   }
 
