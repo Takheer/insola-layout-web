@@ -1,7 +1,14 @@
 import {edgeValues} from "@/services/consts.ts";
-import {ELayoutMethod, useCuttingStore} from "@/stores/useCuttingStore.ts";
+import {
+  ELayoutMethod,
+  type TCuttingPiece,
+  type TRawSheetSettings,
+  type TSlotSettings,
+  useCuttingStore
+} from "@/stores/useCuttingStore.ts";
 import {getCookie} from "@/utils/cookies.ts";
 import {edgeCodesToEdges, slotCodesToSlots} from "@/utils/codesToArrays.ts";
+import type {TProjectDetails} from "@/stores/useProjectsStore.ts";
 
 export type TPieceDto = {
   name: string,
@@ -13,6 +20,7 @@ export type TPieceDto = {
   slots_width_code: number,
   count: number,
   rotatable: boolean
+  size_with_edges: boolean
 }
 
 export type TProjectDto = {
@@ -34,8 +42,24 @@ export type TProjectDto = {
   pieces: TPieceDto[]
 }
 
-export const piecesFromDto = (pieces: TPieceDto[]) => {
-  let localPieces = [];
+export type TProjectFlat = {
+  uuid: string,
+  projectDetails: TProjectDetails,
+  slotSettings: TSlotSettings,
+  edgeSettings: {
+    edgeThickWidth: number,
+    edgeThinWidth: number
+  }
+  rawSheetSettings: TRawSheetSettings,
+  layoutMethod: ELayoutMethod,
+}
+
+export type TProject = TProjectFlat & {
+  pieces: TCuttingPiece[]
+}
+
+export const piecesFromDto = (pieces: TPieceDto[]): TCuttingPiece[] => {
+  let localPieces = [] as TCuttingPiece[];
   for (let i = 0; i < pieces.length; i++) {
     const p = pieces[i];
     const edges = {
@@ -47,7 +71,12 @@ export const piecesFromDto = (pieces: TPieceDto[]) => {
       height: [...slotCodesToSlots[(p.slots_height_code ?? 0) as keyof typeof slotCodesToSlots]]
     };
     localPieces.push({
-      ...p,
+      name: p.name,
+      width: p.width,
+      height: p.height,
+      count: p.count,
+      rotatable: p.rotatable,
+      sizeWithEdges: p.size_with_edges,
       edges,
       slots
     })
@@ -56,7 +85,7 @@ export const piecesFromDto = (pieces: TPieceDto[]) => {
   return localPieces
 }
 
-const projectFlatFromDto = (project: TProjectDto) => {
+const projectFlatFromDto = (project: TProjectDto): TProjectFlat => {
   return {
     uuid: project.uuid,
     projectDetails: {
@@ -84,7 +113,7 @@ const projectFlatFromDto = (project: TProjectDto) => {
   }
 }
 
-const projectFromDto = (project: TProjectDto) => {
+const projectFromDto = (project: TProjectDto): TProject => {
   return {
     ...projectFlatFromDto(project),
     pieces: [...piecesFromDto(project.pieces)]
@@ -196,7 +225,7 @@ async function updateProject(uuid: string, store: ReturnType<typeof useCuttingSt
       status: res.status,
       project: data.pieces ? {
         ...projectFromDto(data)
-      } : {}
+      } : {} as TProject
     }
   }
 
