@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import IDTextInput from "@/components/ui/IDTextInput.vue";
-import IDSwitch from "@/components/ui/IDSwitch.vue";
+import {IKButton, IKSwitch, IKTextInput} from "insola-tech-ui-kit";
 import {ELayoutMethod, useCuttingStore} from "@/stores/useCuttingStore";
 
-import IDButton from "@/components/ui/IDButton.vue";
 import {PhFilePdf} from "@phosphor-icons/vue";
 import {useLayoutToPdf} from "@/services/layoutToPdf";
 import {onUpdated} from "vue";
@@ -78,16 +76,16 @@ onUpdated(() => {
         <div :class="cardClass">
           <h3 class="pb-2">Детали проекта</h3>
           Название
-          <IDTextInput v-model="store.projectDetails.title" class="mb-2"/>
+          <IKTextInput v-model="store.projectDetails.title" class="mb-2"/>
           Заказчик
-          <IDTextInput v-model="store.projectDetails.client" class="mb-2"/>
+          <IKTextInput v-model="store.projectDetails.client" class="mb-2"/>
           Менеджер
-          <IDTextInput v-model="store.projectDetails.manager" class="mb-2"/>
+          <IKTextInput v-model="store.projectDetails.manager" class="mb-2"/>
         </div>
         <div :class="cardClass">
           <h3 class="pb-2">Метод раскроя</h3>
           Выровнять детали по
-          <IDSwitch
+          <IKSwitch
             :options="alignmentOptions"
             @select="store.layoutMethod = $event"
           />
@@ -95,49 +93,49 @@ onUpdated(() => {
         <div :class="cardClass">
           <h3 class="pb-2">Параметры листа</h3>
           Высота, мм
-          <IDTextInput as-number v-model="store.rawSheetSettings.sheetHeight" class="mb-2"/>
+          <IKTextInput as-number v-model="store.rawSheetSettings.sheetHeight" class="mb-2"/>
           Ширина, мм
-          <IDTextInput as-number v-model="store.rawSheetSettings.sheetWidth" class="mb-2" />
+          <IKTextInput as-number v-model="store.rawSheetSettings.sheetWidth" class="mb-2" />
           Толщина, мм
-          <IDTextInput as-number v-model="store.rawSheetSettings.sheetThickness" class="mb-2" />
+          <IKTextInput as-number v-model="store.rawSheetSettings.sheetThickness" class="mb-2" />
           Отступ от края листа, мм
-          <IDTextInput as-number v-model="store.rawSheetSettings.padding" class="mb-2" />
+          <IKTextInput as-number v-model="store.rawSheetSettings.padding" class="mb-2" />
           Ширина реза, мм
-          <IDTextInput as-number v-model="store.rawSheetSettings.sawDiskWidth" class="mb-2" />
+          <IKTextInput as-number v-model="store.rawSheetSettings.sawDiskWidth" class="mb-2" />
         </div>
         <div :class="cardClass">
           <h3 class="pb-2">Кромки</h3>
           Толщина 1, мм
-          <IDTextInput as-number v-model="store.edgeSettings.edgeThinWidth" class="mb-2"/>
+          <IKTextInput as-number v-model="store.edgeSettings.edgeThinWidth" class="mb-2"/>
           Толщина 2, мм
-          <IDTextInput as-number v-model="store.edgeSettings.edgeThickWidth" class="mb-2" />
+          <IKTextInput as-number v-model="store.edgeSettings.edgeThickWidth" class="mb-2" />
         </div>
       </div>
       <div :class="menuClass" v-if="selectedTab === 1">
         <div :class="cardClass">
           <div class="flex flex-col gap-1">
             Ширина, мм
-            <IDTextInput as-number v-model="store.slotSettings.width" />
+            <IKTextInput as-number v-model="store.slotSettings.width" />
           </div>
           <div class="flex flex-col gap-1">
             Глубина, мм
-            <IDTextInput as-number v-model="store.slotSettings.depth" />
+            <IKTextInput as-number v-model="store.slotSettings.depth" />
           </div>
           <div class="flex flex-col gap-1">
             Отступ от края, мм
-            <IDTextInput as-number v-model="store.slotSettings.offset" />
+            <IKTextInput as-number v-model="store.slotSettings.offset" />
           </div>
         </div>
       </div>
       <div :class="menuClass" v-if="selectedTab === 2">
-        <IDButton
+        <IKButton
           full-width
           class="flex flex-row items-center gap-2"
           @click="downloadPdf"
         >
           <PhFilePdf size="20" />
           Карту раскроя в PDF
-        </IDButton>
+        </IKButton>
       </div>
     </div>
   </div>

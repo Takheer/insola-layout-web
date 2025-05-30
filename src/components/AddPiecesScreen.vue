@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import IDButton from "@/components/ui/IDButton.vue";
+import {IKButton} from "insola-tech-ui-kit";
 import {PhPlus, PhFilePdf} from "@phosphor-icons/vue";
 import {useRouter} from "vue-router";
 
@@ -19,7 +19,7 @@ async function createNewProject() {
 
 <template>
 <div class="flex flex-col gap-2 w-full justify-center items-center px-24 py-32">
-  <IDButton
+  <IKButton
     @click="createNewProject"
     class="w-full flex flex-row items-center gap-2 justify-center"
     variant="primary"
@@ -27,18 +27,18 @@ async function createNewProject() {
   >
     <PhPlus size="32" />
     Новый проект
-  </IDButton>
+  </IKButton>
   <div></div>
-  <IDButton
+  <IKButton
     @click="createNewProject"
     class="w-full flex flex-row items-center gap-2 justify-center"
     variant="outline"
     full-width
   >
     Импорт из SketchCut
-  </IDButton>
+  </IKButton>
   <div></div>
-  <IDButton
+  <IKButton
     @click="createNewProject"
     class="w-full flex flex-row items-center gap-2 justify-center"
     variant="outline"
@@ -46,7 +46,7 @@ async function createNewProject() {
   >
     <PhFilePdf size="32" />
     Распознать из PDF
-  </IDButton>
+  </IKButton>
 </div>
 </template>
 

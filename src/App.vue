@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import HeaderBar from "@/components/HeaderBar.vue";
+import { IKButton } from "insola-tech-ui-kit";
+console.log({IKButton})
 </script>
 
 <template>

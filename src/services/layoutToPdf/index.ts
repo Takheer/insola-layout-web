@@ -139,7 +139,7 @@ export const useLayoutToPdf = () => {
     stage.add(layer)
 
     doc.addImage(
-      await rotate90(stage.toDataURL({ pixelRatio: 2 })),
+      await rotate90(stage.toDataURL({ pixelRatio: 0.5 })),
       30,
       10,
       150,
