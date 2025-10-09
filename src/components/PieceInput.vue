@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { vMaska } from "maska/vue"
+import { IKButton } from "insola-tech-ui-kit"
 
 import {
   PhArrowsClockwise,
   PhArrowsLeftRight,
-  PhCopy,
+  PhCopy, PhMinus, PhPlus,
   PhSidebarSimple,
   PhTrash,
   PhX
@@ -70,6 +71,7 @@ function deletePiece() {
 <template>
   <div class="flex flex-col gap-2 p-4 rounded border shadow">
     <div class="flex flex-col md:flex-row gap-2">
+      <p class="py-1">{{ pieceIndex + 1}}.</p>
       <IDTextInput
         v-model="piece.name"
         placeholder="Название (необязательно)"
@@ -143,15 +145,37 @@ function deletePiece() {
           </div>
         </div>
       </div>
-      <IDTextInput
-        :model-value="piece.count"
-        v-maska="'##'"
-        @update:model-value="piece.count = +$event"
-        placeholder="Количество"
-        dense
-        class="max-w-32"
-        :disabled="disabled"
-      />
+      <div class="flex flex-col">
+        <IDTextInput
+          :model-value="piece.count"
+          v-maska="'##'"
+          @update:model-value="piece.count = +$event"
+          placeholder="Количество"
+          dense
+          class="md:max-w-32"
+          :disabled="disabled"
+        />
+        <div class="flex flex-row gap-1 pt-2">
+          <IKButton
+            variant="outline"
+            fullWidth
+            size="sm"
+            class="flex grow"
+            @click="piece.count++"
+          >
+            <PhPlus size="8"/>
+          </IKButton>
+          <IKButton
+            variant="outline"
+            fullWidth
+            size="sm"
+            class="flex grow"
+            @click="piece.count = Math.max(0, (piece.count ?? 0) - 1)"
+          >
+            <PhMinus size="8"/>
+          </IKButton>
+        </div>
+      </div>
     </div>
     <div class="flex flex-row gap-2 mt-2 items-center">
       <IDPopup

@@ -25,7 +25,7 @@ const auth = useAuth();
 const credential = ref('')
 
 const currentStep = ref(steps.INPUT_CREDENTIAL);
-const loginMode = ref(modes.LOGIN);
+const loginMode = ref(modes.REGISTRATION);
 
 function onSetCredential(e: string) {
   credential.value = e;

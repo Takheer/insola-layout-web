@@ -18,7 +18,6 @@ export const useLayoutToPdf = () => {
   });
 
   async function layoutToPdf(order: TOrderPdfData) {
-
     doc = new JSPDF({
       orientation: "portrait",
       unit: "mm",
@@ -80,7 +79,7 @@ export const useLayoutToPdf = () => {
 
     const piecesByRawList: Record<string, TPiecesLayout[]> = {}
     const sheetsByRawList: Record<string, TPiecesLayout[]> = {}
-    for (let piece of pieces) {
+    for (const piece of pieces) {
       if (Object.keys(piecesByRawList).includes(String(piece.rawListNumber))) {
         piecesByRawList[String(piece.rawListNumber)].push(piece);
       } else {
@@ -88,7 +87,7 @@ export const useLayoutToPdf = () => {
       }
     }
 
-    for (let sheet of sheets) {
+    for (const sheet of sheets) {
       if (Object.keys(sheetsByRawList).includes(String(sheet.rawListNumber))) {
         sheetsByRawList[String(sheet.rawListNumber)].push(sheet);
       } else {
@@ -106,7 +105,7 @@ export const useLayoutToPdf = () => {
       piecesListToPdf(piecesByPage[i], i*32 + 1)
     }
 
-    for (let rawList of Object.keys(piecesByRawList)) {
+    for (const rawList of Object.keys(piecesByRawList)) {
       doc.addPage()
       await sheetToPdf(order, piecesByRawList[parseInt(rawList)], sheetsByRawList[parseInt(rawList)])
     }
@@ -128,11 +127,11 @@ export const useLayoutToPdf = () => {
     });
     const layer = new Konva.Layer();
 
-    for (let piece of pieces) {
+    for (const piece of pieces) {
       layer.add(...getPieceDrawings(piece))
     }
 
-    for (let sheet of sheets) {
+    for (const sheet of sheets) {
       layer.add(...getSheetDrawings(sheet))
     }
 

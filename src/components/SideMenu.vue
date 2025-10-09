@@ -2,12 +2,14 @@
 import {IKButton, IKSwitch, IKTextInput} from "insola-tech-ui-kit";
 import {ELayoutMethod, useCuttingStore} from "@/stores/useCuttingStore";
 
-import {PhFilePdf} from "@phosphor-icons/vue";
+import {PhFilePdf, PhReceipt} from "@phosphor-icons/vue";
 import {useLayoutToPdf} from "@/services/layoutToPdf";
 import {onUpdated} from "vue";
+import {usePiecesToStickers} from "@/services/piecesToStickers";
 
 const store = useCuttingStore();
 const layoutToPdf = useLayoutToPdf()
+const piecesToStickers = usePiecesToStickers()
 
 type TProps = {
   selectedTab: number | null
@@ -29,7 +31,7 @@ function downloadPdf() {
     title: store.projectDetails.title ?? '',
     manager: store.projectDetails.manager,
     client: store.projectDetails.client,
-    materialName: "ЛДСП 2800х2070х16 U963 чото там какой-то нежный",
+    materialName: "Надо указать настоящий материал, а то ужос",
     sheet: {
       width: store.rawSheetSettings.sheetWidth,
       height: store.rawSheetSettings.sheetHeight,
@@ -40,7 +42,7 @@ function downloadPdf() {
     },
     details: {
       count: store.pieces.reduce((prev, curr) => prev + (curr.count ?? 0), 0),
-      area: 5.43
+      area: store.pieces.reduce((prev, curr) => prev + ((curr.width ?? 0) * (curr.height ?? 0)), 0)
     },
     edges: {
       edgeThinWidth: store.edgeSettings.edgeThinWidth,
@@ -59,6 +61,10 @@ function downloadPdf() {
     pieces: store.pieces,
     layoutMethod: store.layoutMethod
   })
+}
+
+function downloadStickers() {
+  piecesToStickers(store.pieces)
 }
 
 onUpdated(() => {
@@ -135,6 +141,15 @@ onUpdated(() => {
         >
           <PhFilePdf size="20" />
           Карту раскроя в PDF
+        </IKButton>
+        <IKButton
+          full-width
+          class="flex flex-row items-center gap-2"
+          variant="outline"
+          @click="downloadStickers"
+        >
+          <PhReceipt size="20" />
+          Этикетки для деталей
         </IKButton>
       </div>
     </div>

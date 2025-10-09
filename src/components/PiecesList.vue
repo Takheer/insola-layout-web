@@ -6,8 +6,12 @@ import SlotsSelectModal from "@/components/SlotsSelectModal.vue";
 import MaterialAddModal from "@/components/MaterialAddModal.vue";
 import PieceInput from "@/components/PieceInput.vue";
 import {onMounted, ref} from "vue";
+import {breakpointsTailwind, useBreakpoints} from "@vueuse/core";
 
 const store = useCuttingStore()
+
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const isMobile = breakpoints.smaller('lg')
 
 const isMaterialAddModalEnabled = ref(false);
 const isSlotsSelectModalEnabled = ref(false);
@@ -88,6 +92,8 @@ onMounted(() => {
     @click="store.addNewPiece"
     class="w-full flex flex-row items-center gap-2 justify-center"
     variant="outline"
+    :size="isMobile ? 'sm' : 'md'"
+    :dense="isMobile"
     v-if="!disabled"
   >
     <PhPlus size="32" />

@@ -70,11 +70,11 @@ store.$subscribe(() => {
         :selected-tab="selectedTab"
         :is-project-editable="isProjectEditable"
         @update="selectedTab=$event"
-        class="order-2 md:order-1"
+        class="order-2 md:order-1 z-[2000]"
       />
       <div class="flex flex-row overflow-y-hidden order-1 md:order-2">
         <Transition>
-          <SideMenu :selected-tab="selectedTab" />
+          <SideMenu class="absolute z-1000 pt-4 md:pt-0 md:static" :selected-tab="selectedTab" />
         </Transition>
         <div class="flex flex-col md:flex-row gap-2 p-4 pt-0 w-full">
           <PiecesList :disabled="!isProjectEditable" class="overflow-y-auto transition-all grow h-[43vh] md:h-[86vh]" />
