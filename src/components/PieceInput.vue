@@ -84,10 +84,12 @@ function deletePiece() {
         :options="[...materialOptions, {label: 'Добавить', value: 'add', onClick: openMaterialAddModal}]"
         :filterable="false"
         :disabled="disabled"
+        :clearable="!!store.pieces[pieceIndex].materialName"
         dense
         inline
         @update:modelValue="setMaterial"
         @search="searchQuery = $event"
+        @clear="() => setMaterial('')"
       />
       <div class="flex flex-row gap-2">
         <div class="flex flex-grow flex-col gap-2">

@@ -2,6 +2,7 @@
 import { vOnClickOutside } from '@vueuse/components'
 import IDTextInput from "@/components/ui/IDTextInput.vue";
 import {computed, ref, watch} from "vue";
+import {PhX} from "@phosphor-icons/vue";
 
 export type TProps = {
   modelValue?: string;
@@ -50,6 +51,7 @@ const emits = defineEmits<TEmits>();
 
 const query = ref('');
 const isEnabled = ref(false);
+const xHovered = ref(false);
 
 const localModelValue = computed({
   get () {
@@ -171,6 +173,17 @@ function onClear () {
         >
           {{ option[itemLabel] }}
         </div>
+      </div>
+    </template>
+    <template #append:inner v-if="clearable">
+      <div
+        @mouseenter="disabled ? xHovered = true : () => {}"
+        @mouseleave="xHovered = false"
+        class="p-2 transition-all"
+        :class="{'cursor-pointer hover:text-orange-600': !disabled}"
+        @click="disabled ? () => {} : emits('clear')"
+      >
+        <PhX size="16" />
       </div>
     </template>
   </IDTextInput>

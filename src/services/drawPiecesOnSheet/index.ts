@@ -23,7 +23,7 @@ export const useDrawPiecesOnSheet = (sheetHeight: number) => {
         fontSize: textSize,
         fontFamily: 'Roboto',
         fill: '#222222'
-      }).move({x: piece.w / 2 - textSize, y: 0}),
+      }).move({x: (piece.w - textSize) / 2, y: 0}),
       new Konva.Text({
         x: piece.x,
         y: piece.y + piece.h - textSize,
@@ -31,7 +31,7 @@ export const useDrawPiecesOnSheet = (sheetHeight: number) => {
         fontSize: textSize,
         fontFamily: 'Roboto',
         fill: '#222222'
-      }).rotate(-90).move({x: 2, y: 0})
+      }).rotate(-90).move({x: 2, y: textSize - (piece.h-textSize)/2}),
     ]
   }
 

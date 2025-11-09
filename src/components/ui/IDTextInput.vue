@@ -39,7 +39,7 @@ function update(e: Event) {
         data-testid="input-wrapper"
         class="flex grow overflow-hidden"
         :class="[
-          'transition-all outline outline-gray-400 outline-2 hover:outline-orange-200 focus:outline-orange-400 rounded',
+          'flex flex-row justify-between items-center transition-all outline-gray-400 outline-2 hover:outline-orange-200 focus:outline-orange-400 rounded',
           disabled ? 'hover:outline-gray-200' : 'hover:outline-orange-200'
           ]"
       >
@@ -61,6 +61,7 @@ function update(e: Event) {
             disabled ? 'text-gray-400' : '',
             ]"
         />
+        <slot name="append:inner" />
       </div>
       <slot name="append:outer" />
     </div>
